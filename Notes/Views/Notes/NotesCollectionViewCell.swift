@@ -10,11 +10,12 @@ import UIKit
 class NotesCollectionViewCell: UICollectionViewCell {
     static let cellIdentifier = "NotesCollectionViewCell"
     
-    private let noteLabel = DefaultUILabel(inputText: "New Note", fontSize: 16, fontWeight: .regular, alingment: .natural)
+    private let noteTitle = DefaultUILabel(inputText: "Note title", fontSize: 20, fontWeight: .semibold, alingment: .left)
+    private let noteSubTitle = DefaultUILabel(inputText: "Note body", fontSize: 16, fontWeight: .regular, alingment: .left)
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        contentView.addSubview(noteLabel)
+        contentView.addSubviews(noteTitle, noteSubTitle)
         contentView.backgroundColor = .tertiarySystemBackground
         contentView.layer.cornerRadius = 8
         contentView.layer.masksToBounds = true
@@ -27,16 +28,27 @@ class NotesCollectionViewCell: UICollectionViewCell {
     
     override func prepareForReuse() {
         super.prepareForReuse()
-        noteLabel.text = nil
+        noteTitle.text = nil
+        noteSubTitle.text = nil
     }
     
     private func setConstraints() {
         NSLayoutConstraint.activate([
-            noteLabel.topAnchor.constraint(equalTo: contentView.topAnchor),
-            noteLabel.leftAnchor.constraint(equalTo: contentView.leftAnchor),
-            noteLabel.rightAnchor.constraint(equalTo: contentView.rightAnchor),
-            noteLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
+            noteTitle.topAnchor.constraint(equalTo: contentView.topAnchor),
+            noteTitle.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 4),
+            noteTitle.rightAnchor.constraint(equalTo: contentView.rightAnchor),
+            noteTitle.heightAnchor.constraint(equalTo: contentView.heightAnchor, multiplier: 0.5),
+            
+            noteSubTitle.topAnchor.constraint(equalTo: noteTitle.bottomAnchor),
+            noteSubTitle.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 4),
+            noteSubTitle.rightAnchor.constraint(equalTo: contentView.rightAnchor),
+            noteSubTitle.heightAnchor.constraint(equalTo: contentView.heightAnchor, multiplier: 0.5),
         ])
+    }
+    
+    func config(model: NoteTextModel){
+        noteTitle.text = model.titleText
+        noteSubTitle.text = model.bodyText
     }
     
 }

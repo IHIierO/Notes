@@ -22,6 +22,7 @@
 		395BE3F7298BD72B00DCD96C /* NoteDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 395BE3F6298BD72B00DCD96C /* NoteDetailViewController.swift */; };
 		395BE3FB298BD78F00DCD96C /* NoteDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 395BE3FA298BD78F00DCD96C /* NoteDetailView.swift */; };
 		395BE3FE298BD83400DCD96C /* NoteDetailViewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 395BE3FD298BD83400DCD96C /* NoteDetailViewViewModel.swift */; };
+		395BE400298C099600DCD96C /* NoteTextModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 395BE3FF298C099600DCD96C /* NoteTextModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -42,6 +43,7 @@
 		395BE3F6298BD72B00DCD96C /* NoteDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteDetailViewController.swift; sourceTree = "<group>"; };
 		395BE3FA298BD78F00DCD96C /* NoteDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteDetailView.swift; sourceTree = "<group>"; };
 		395BE3FD298BD83400DCD96C /* NoteDetailViewViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteDetailViewViewModel.swift; sourceTree = "<group>"; };
+		395BE3FF298C099600DCD96C /* NoteTextModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteTextModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -115,6 +117,7 @@
 		395BE3E6298BBC4B00DCD96C /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				395BE3FF298C099600DCD96C /* NoteTextModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -256,6 +259,7 @@
 				395BE3CF298BBA0400DCD96C /* SceneDelegate.swift in Sources */,
 				395BE3FE298BD83400DCD96C /* NoteDetailViewViewModel.swift in Sources */,
 				395BE3F3298BD35300DCD96C /* NotesCollectionViewCell.swift in Sources */,
+				395BE400298C099600DCD96C /* NoteTextModel.swift in Sources */,
 				395BE3D7298BBA0400DCD96C /* Notes.xcdatamodeld in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

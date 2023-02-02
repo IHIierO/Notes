@@ -36,8 +36,15 @@ class NotesViewController: UIViewController, NotesViewDelegate {
         view.backgroundColor = .systemBackground
         title = "Notes"
         view.addSubview(notesView)
+        navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "square.and.pencil"), style: .plain, target: self, action: #selector(openNewNote))
     }
 
+    @objc private func openNewNote() {
+        let viewModel = NoteDetailViewViewModel(model: NoteTextModel(id: "", titleText: nil, bodyText: nil, noteDate: Date()))
+        let detailVC =  NoteDetailViewController(viewModel: viewModel)
+        navigationController?.pushViewController(detailVC, animated: true)
+    }
+    
     private func setConstraints() {
         NSLayoutConstraint.activate([
             notesView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
@@ -48,8 +55,8 @@ class NotesViewController: UIViewController, NotesViewDelegate {
     }
     
     // MARK: - NotesViewDelegate
-    func notesView(_ notesView: NotesView) {
-        let viewModel = NoteDetailViewViewModel()
+    func notesView(_ notesView: NotesView, didSelectModel model: NoteTextModel) {
+        let viewModel = NoteDetailViewViewModel(model: model)
         let detailVC =  NoteDetailViewController(viewModel: viewModel)
         navigationController?.pushViewController(detailVC, animated: true)
     }

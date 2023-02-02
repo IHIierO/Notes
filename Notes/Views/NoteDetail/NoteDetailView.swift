@@ -28,7 +28,6 @@ final class NoteDetailView: UIView {
     
     private let menuContainer: UIStackView = {
        let container = UIStackView()
-        container.backgroundColor = .green
         container.axis = .vertical
         container.distribution = .fillEqually
         container.alignment = .fill
@@ -43,7 +42,7 @@ final class NoteDetailView: UIView {
     private let menuButton: UIButton = {
        let button = UIButton(frame: CGRect(x: 0, y: 0, width: 50, height: 50))
         button.configuration = .filled()
-        button.configuration?.baseBackgroundColor = .green
+        button.configuration?.baseBackgroundColor = .green.withAlphaComponent(0.3)
         button.configuration?.image = UIImage(systemName: "line.3.horizontal.decrease")
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
@@ -81,6 +80,7 @@ final class NoteDetailView: UIView {
     init(frame: CGRect, viewModel: NoteDetailViewViewModel) {
         self.viewModel = viewModel
         super.init(frame: frame)
+        textView.attributedText = viewModel.displayNote
         setupView()
         setConstraints()
     }
@@ -104,8 +104,8 @@ final class NoteDetailView: UIView {
             textView.rightAnchor.constraint(equalTo: rightAnchor),
             textView.bottomAnchor.constraint(equalTo: keyboardLayoutGuide.topAnchor),
             
-            menuContainer.topAnchor.constraint(equalTo: topAnchor, constant: 20),
-            menuContainer.rightAnchor.constraint(equalTo: rightAnchor, constant: -20),
+            menuContainer.topAnchor.constraint(equalTo: topAnchor, constant: 10),
+            menuContainer.rightAnchor.constraint(equalTo: rightAnchor, constant: -10),
             menuContainer.widthAnchor.constraint(equalToConstant: 50),
         ])
         menuContainerOpen = menuContainer.heightAnchor.constraint(equalToConstant: 200)

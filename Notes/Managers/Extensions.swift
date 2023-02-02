@@ -32,6 +32,8 @@ extension UIStackView {
 extension UIFont {
     public enum nameOf: String {
         case Didot = "Didot"
+        case HelveticaNeueBold = "HelveticaNeue-Bold"
+        case HelveticaNeue = "HelveticaNeue"
     }
 }
 

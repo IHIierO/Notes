@@ -9,7 +9,8 @@ import UIKit
 
 protocol NotesViewDelegate: AnyObject {
     func notesView(
-        _ notesView: NotesView
+        _ notesView: NotesView,
+        didSelectModel model: NoteTextModel
     )
 }
 
@@ -56,11 +57,7 @@ final class NotesView: UIView {
     }
     
     private func createSections(for sectionIndex: Int) -> NSCollectionLayoutSection {
-        let sectionType = viewModel.sections
-        switch sectionType[sectionIndex] {
-        case .notes:
             return viewModel.createNotesSectionLayout()
-        }
     }
     
     private func setConstarints() {
@@ -78,7 +75,8 @@ final class NotesView: UIView {
 
 // MARK: - Delegate
 extension NotesView: NotesViewViewModelDelegate {
-    func didSelectCharacter() {
-        delegate?.notesView(self)
+    func didSelectCharacter(_ model: NoteTextModel) {
+        delegate?.notesView(self, didSelectModel: model)
     }
+    
 }
