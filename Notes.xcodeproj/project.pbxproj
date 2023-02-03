@@ -23,6 +23,7 @@
 		395BE3FB298BD78F00DCD96C /* NoteDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 395BE3FA298BD78F00DCD96C /* NoteDetailView.swift */; };
 		395BE3FE298BD83400DCD96C /* NoteDetailViewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 395BE3FD298BD83400DCD96C /* NoteDetailViewViewModel.swift */; };
 		395BE400298C099600DCD96C /* NoteTextModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 395BE3FF298C099600DCD96C /* NoteTextModel.swift */; };
+		395BE402298D0BC900DCD96C /* UserDefaultsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 395BE401298D0BC900DCD96C /* UserDefaultsManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -44,6 +45,7 @@
 		395BE3FA298BD78F00DCD96C /* NoteDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteDetailView.swift; sourceTree = "<group>"; };
 		395BE3FD298BD83400DCD96C /* NoteDetailViewViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteDetailViewViewModel.swift; sourceTree = "<group>"; };
 		395BE3FF298C099600DCD96C /* NoteTextModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteTextModel.swift; sourceTree = "<group>"; };
+		395BE401298D0BC900DCD96C /* UserDefaultsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -128,6 +130,7 @@
 				395BE3E9298BC19000DCD96C /* CompositionalLayoutHelpers.swift */,
 				395BE3EB298BC1F900DCD96C /* Extensions.swift */,
 				395BE3F4298BD45C00DCD96C /* DefaultUIClasses.swift */,
+				395BE401298D0BC900DCD96C /* UserDefaultsManager.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -258,6 +261,7 @@
 				395BE3F5298BD45C00DCD96C /* DefaultUIClasses.swift in Sources */,
 				395BE3CF298BBA0400DCD96C /* SceneDelegate.swift in Sources */,
 				395BE3FE298BD83400DCD96C /* NoteDetailViewViewModel.swift in Sources */,
+				395BE402298D0BC900DCD96C /* UserDefaultsManager.swift in Sources */,
 				395BE3F3298BD35300DCD96C /* NotesCollectionViewCell.swift in Sources */,
 				395BE400298C099600DCD96C /* NoteTextModel.swift in Sources */,
 				395BE3D7298BBA0400DCD96C /* Notes.xcdatamodeld in Sources */,

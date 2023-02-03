@@ -18,13 +18,13 @@ final class NotesView: UIView {
     
     public weak var delegate: NotesViewDelegate?
     
-    private let viewModel: NotesViewViewModel
+    public let viewModel: NotesViewViewModel
     
     public var notesText: [String] = ["First",
                                       "Second",
                                       "Third"]
     
-    private var collectionView: UICollectionView?
+    public var collectionView: UICollectionView?
    
     // MARK: - Init
     init(frame: CGRect, viewModel: NotesViewViewModel) {
@@ -37,6 +37,7 @@ final class NotesView: UIView {
         addSubview(collectionView)
         setConstarints()
         viewModel.delegate = self
+        viewModel.fetchNotes()
     }
     
     required init?(coder: NSCoder) {

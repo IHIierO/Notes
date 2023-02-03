@@ -24,6 +24,8 @@ class NoteDetailViewController: UIViewController{
     
     let noteDetailView: NoteDetailView
     
+    var keys: [String] = []
+    
     // MARK: - Init
     init(viewModel: NoteDetailViewViewModel) {
         self.viewModel = viewModel
@@ -53,6 +55,12 @@ class NoteDetailViewController: UIViewController{
         textViewIsEditing.toggle()
         navigationItem.rightBarButtonItem?.title = rightButtonTitle
         noteDetailView.textView.isEditable.toggle()
+        
+        /// Save logic
+        if rightButtonTitle == "Редактировать" {
+            let newNote = NoteTextModel(id: "\(Date())", titleText: noteDetailView.textView.text ?? "", bodyText: "", noteDate: Date())
+            UserDefaultsManager.shared.saveData(newNote)
+        }
     }
     
     private func setConstraints() {

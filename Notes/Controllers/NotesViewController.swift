@@ -25,6 +25,11 @@ class NotesViewController: UIViewController, NotesViewDelegate {
     }
     
     // MARK: - LifeStyle
+    override func viewWillAppear(_ animated: Bool) {
+        notesView.viewModel.fetchNotes()
+        notesView.collectionView?.reloadData()
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupController()
@@ -37,11 +42,18 @@ class NotesViewController: UIViewController, NotesViewDelegate {
         title = "Notes"
         view.addSubview(notesView)
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "square.and.pencil"), style: .plain, target: self, action: #selector(openNewNote))
+        navigationItem.leftBarButtonItem = UIBarButtonItem(title: "delete", style: .plain, target: self, action: #selector(deleteAllNotes))
+    }
+    
+    @objc private func deleteAllNotes() {
+        UserDefaultsManager.shared.resetDefaults()
     }
 
     @objc private func openNewNote() {
         let viewModel = NoteDetailViewViewModel(model: NoteTextModel(id: "", titleText: nil, bodyText: nil, noteDate: Date()))
         let detailVC =  NoteDetailViewController(viewModel: viewModel)
+        detailVC.textViewIsEditing = true
+        detailVC.noteDetailView.textView.isEditable = true
         navigationController?.pushViewController(detailVC, animated: true)
     }
     
