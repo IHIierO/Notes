@@ -44,17 +44,17 @@ final class UserDefaultsManager {
     }
     
     public func getData(models: [NoteTextModel], completion: @escaping (Result<NoteTextModel,Error>) -> Void) {
-        print("Remade Started")
+        print("Update Started")
         guard let keys = UserDefaultsManager.shared.defaults.stringArray(forKey: "Model.keys") else {return}
         print("StorageKeys: -\(keys)")
         print("Keys Count: - \(Array(UserDefaults.standard.dictionaryRepresentation().keys).count)")
         for key in keys {
+            
             if let data = UserDefaultsManager.shared.defaults.object(forKey: key) as? Data, let newNote = try? JSONDecoder().decode(NoteTextModel.self, from: data) {
                 completion(.success(newNote))
-                print("Remade Complete")
-                print("Note: - \(newNote)")
+                print("Update Complete")
             } else {
-                print("Remade Not Complete")
+                print("Update Not Complete")
                 completion(.failure(URLError(.badServerResponse)))
             }
         }

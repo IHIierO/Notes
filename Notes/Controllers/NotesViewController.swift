@@ -26,6 +26,7 @@ class NotesViewController: UIViewController, NotesViewDelegate {
     
     // MARK: - LifeStyle
     override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         notesView.viewModel.fetchNotes()
         notesView.collectionView?.reloadData()
     }
@@ -36,7 +37,7 @@ class NotesViewController: UIViewController, NotesViewDelegate {
         setConstraints()
         notesView.delegate = self
     }
-
+    
     private func setupController() {
         view.backgroundColor = .systemBackground
         title = "Notes"

@@ -44,7 +44,16 @@ final class NotesViewViewModel: NSObject {
                 }) {
                     self?.models.append(note)
                     print("\(self?.models)")
+                } else {
                     print("Contains")
+                    for model in strongSelf.models where model.bodyText != note.bodyText {
+                        print("New body text input: - \(model.id)")
+                        self?.models.removeAll(where: { model in
+                            model.id == note.id
+                        })
+                        self?.models.append(note)
+                        print("New body text output: - \(model.id)")
+                    }
                 }
                 
             case .failure(let failure):
@@ -65,14 +74,14 @@ extension NotesViewViewModel: UICollectionViewDelegate, UICollectionViewDataSour
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: NotesCollectionViewCell.cellIdentifier, for: indexPath) as? NotesCollectionViewCell else {
             fatalError("Unsupported cell")
         }
-        let model = models[indexPath.row]
+        let model = models.sorted(by: {$0.noteDate > $1.noteDate})[indexPath.row]
         cell.config(model: model)
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         collectionView.deselectItem(at: indexPath, animated: true)
-        let model = models[indexPath.row]
+        let model = models.sorted(by: {$0.noteDate > $1.noteDate})[indexPath.row]
         delegate?.didSelectCharacter(model)
     }
     

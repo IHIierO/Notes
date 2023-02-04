@@ -21,7 +21,7 @@ final class NoteDetailView: UIView {
        let textView = UITextView()
         textView.backgroundColor = .red
         textView.isEditable = false
-        textView.font = UIFont.systemFont(ofSize: 20)
+        textView.font = UIFont(name: UIFont.nameOf.HelveticaNeueBold.rawValue, size: 20)
         textView.translatesAutoresizingMaskIntoConstraints = false
         return textView
     }()
@@ -95,6 +95,7 @@ final class NoteDetailView: UIView {
         addSubviews(textView, menuContainer)
         menuContainer.addArrangedSubview(menuButton)
         menuButton.addTarget(self, action: #selector(menuContainerOpenTap), for: .touchUpInside)
+        textView.delegate = self
     }
     
     private func setConstraints() {
@@ -134,4 +135,24 @@ final class NoteDetailView: UIView {
             })
         }
     }
+}
+
+extension NoteDetailView: UITextViewDelegate {
+    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+//        if let character = text.last, character.isNewline {
+//                print("New Line")
+//
+//            }
+//
+        
+            return true
+    }
+    
+//    func textViewDidChange(_ textView: UITextView) {
+//
+//        if textView.text.last == "\n" {
+//
+//        }
+//
+//    }
 }

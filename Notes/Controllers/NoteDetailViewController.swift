@@ -41,7 +41,12 @@ class NoteDetailViewController: UIViewController{
         super.viewDidLoad()
         setupController()
         setConstraints()
-        //print("TextView text: - \(noteDetailView.textView.text)")
+        print("Current model: - \(viewModel.currentModel)")
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        print("Current model: - \(viewModel.currentModel)")
     }
     
     private func setupController() {
@@ -56,11 +61,14 @@ class NoteDetailViewController: UIViewController{
     }
     
     @objc private func splitText() {
-        viewModel.saveNoteText(noteDetailView) { result in
+        viewModel.saveNoteText(noteDetailView) { [self] result in
             switch result {
             case .success(let noteText):
-                print("Title: - \(noteText[0])")
-                print("Body: - \(noteText[1])")
+                print("Remade current note")
+                let newNote = NoteTextModel(id: viewModel.currentModel.id, titleText: noteText[0], bodyText: noteText[1], noteDate: Date())
+                UserDefaultsManager.shared.deleteNote(model: newNote)
+                UserDefaultsManager.shared.saveData(newNote)
+                print("Remade complite")
             case .failure:
                 break
             }
@@ -88,15 +96,33 @@ class NoteDetailViewController: UIViewController{
                 }
             }
         } else {
+            /// Remade logic
             if rightButtonTitle == "Редактировать" {
-                let newNote = NoteTextModel(id: viewModel.currentModel.id, titleText: (noteDetailView.textView.text + "\n") , bodyText: "", noteDate: Date())
-                if let encoded = try? JSONEncoder().encode(newNote) {
-                    UserDefaultsManager.shared.defaults.set(encoded, forKey: viewModel.currentModel.id)
+                print("Remade current note")
+                viewModel.saveNoteText(noteDetailView) { [weak self] result in
+                    guard let strongSelf = self else {
+                        return
+                    }
+                    print("Current ID: - \(strongSelf.viewModel.currentModel.id)")
+                    switch result {
+                    case .success(let noteText):
+                        
+                        let newNote = NoteTextModel(id: strongSelf.viewModel.currentModel.id, titleText: noteText[0] , bodyText: noteText[1], noteDate: Date())
+                        UserDefaultsManager.shared.deleteNote(model: newNote)
+                        UserDefaultsManager.shared.saveData(newNote)
+                        
+                        
+                        if let data = UserDefaultsManager.shared.defaults.object(forKey: strongSelf.viewModel.currentModel.id) as? Data, let currentNote = try? JSONDecoder().decode(NoteTextModel.self, from: data) {
+                            print("Updated Current Note: - \(currentNote)")
+                        }
+                        print("Remade complite")
+                    case .failure:
+                        break
+                    }
                 }
                 print("The note has been edited")
             }
         }
-        
     }
     
     private func setConstraints() {

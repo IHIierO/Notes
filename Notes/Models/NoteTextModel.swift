@@ -8,8 +8,8 @@
 import Foundation
 
 struct NoteTextModel: Codable {
-    let id: String
-    let titleText: String?
-    let bodyText: String?
+    var id: String
+    var titleText: String?
+    var bodyText: String?
     let noteDate: Date
 }
