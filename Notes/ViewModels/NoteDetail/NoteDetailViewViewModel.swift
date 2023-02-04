@@ -14,6 +14,10 @@ final class NoteDetailViewViewModel {
         self.model = model
     }
     
+    public var currentModel: NoteTextModel {
+        return model
+    }
+    
     public var displayNote: NSMutableAttributedString {
         guard model.titleText != nil, model.bodyText != nil else {
             return NSMutableAttributedString(string: "")
@@ -29,6 +33,16 @@ final class NoteDetailViewViewModel {
         mutableAttributedString.append(NSAttributedString(string: "\n"))
         mutableAttributedString.append(body)
         return mutableAttributedString
+    }
+    
+    public func saveNoteText(_ noteDetailView: NoteDetailView, completion: @escaping (Result<[String],Error>) -> Void) {
+        guard let text = noteDetailView.textView.text else {
+            return
+        }
+        let components = text.split(maxSplits: 1) { $0.isNewline }
+        let title = components[0]
+        let body = components[1]
+        completion(.success([String(describing: title), String(describing: body)]))
     }
     
 }

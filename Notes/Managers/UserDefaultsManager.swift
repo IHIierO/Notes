@@ -29,12 +29,17 @@ final class UserDefaultsManager {
         }
         print("Keys: - \(UserDefaultsManager.shared.defaults.array(forKey: "Model.keys"))")
         
+        if ((UserDefaultsManager.shared.defaults.object(forKey: key) as? Data) != nil) {
+            print("The model already exists")
+        } else {
             if let encoded = try? JSONEncoder().encode(model) {
                 print("Encode: - \(encoded)")
                 UserDefaultsManager.shared.defaults.set(encoded, forKey: key)
                 print("Key: - \(key)")
-            print("Save Complete")
+                print("Save Complete")
+            }
         }
+        
         print("Сохранить")
     }
     
@@ -58,8 +63,13 @@ final class UserDefaultsManager {
     public func deleteNote(model: NoteTextModel) {
         print("Delete Started")
         UserDefaultsManager.shared.defaults.removeObject(forKey: model.id)
+        if var keys = UserDefaultsManager.shared.defaults.stringArray(forKey: "Model.keys") {
+            keys.removeAll { key in
+                key == model.id
+            }
+            UserDefaultsManager.shared.defaults.set(keys, forKey: "Model.keys")
+        }
         print("Delete Complete")
-        
     }
     
     public func resetDefaults() {

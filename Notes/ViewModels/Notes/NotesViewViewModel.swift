@@ -21,8 +21,8 @@ final class NotesViewViewModel: NSObject {
     
     override init(){
         models = [
-            .init(id: "2023-02-03 13:39:57 +0000", titleText: "New Note with long long long long long name", bodyText: "Simple text body for note", noteDate: Date()),
-            .init(id: "2023-02-03 13:49:57 +0000", titleText: "Enother Note", bodyText: "Enother text body for note", noteDate: Date()),
+            .init(id: "2023-02-03 13:39:57 +0000", titleText: "New Note with long long long long long name", bodyText: "Simple text body for note", noteDate: CustomDate.dateFromCustomString(string: "01.02.2023")),
+            .init(id: "2023-02-03 13:49:57 +0000", titleText: "Enother Note", bodyText: "Enother text body for note", noteDate: CustomDate.dateFromCustomString(string: "02.02.2023")),
         ]
     }
     

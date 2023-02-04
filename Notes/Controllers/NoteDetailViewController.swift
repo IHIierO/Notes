@@ -23,8 +23,7 @@ class NoteDetailViewController: UIViewController{
     }
     
     let noteDetailView: NoteDetailView
-    
-    var keys: [String] = []
+    var isNewNote = false
     
     // MARK: - Init
     init(viewModel: NoteDetailViewViewModel) {
@@ -42,13 +41,30 @@ class NoteDetailViewController: UIViewController{
         super.viewDidLoad()
         setupController()
         setConstraints()
+        //print("TextView text: - \(noteDetailView.textView.text)")
     }
     
     private func setupController() {
         view.backgroundColor = .systemBackground
         title = "Single Note"
         view.addSubview(noteDetailView)
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title: rightButtonTitle, style: .plain, target: self, action: #selector(isEditingTap))
+        
+        let editingButton = UIBarButtonItem(title: rightButtonTitle, style: .plain, target: self, action: #selector(isEditingTap))
+        //MARK: - test split text
+        let splitButton = UIBarButtonItem(title: "Split", style: .plain, target: self, action: #selector(splitText))
+        navigationItem.rightBarButtonItems = [editingButton, splitButton]
+    }
+    
+    @objc private func splitText() {
+        viewModel.saveNoteText(noteDetailView) { result in
+            switch result {
+            case .success(let noteText):
+                print("Title: - \(noteText[0])")
+                print("Body: - \(noteText[1])")
+            case .failure:
+                break
+            }
+        }
     }
     
     @objc private func isEditingTap() {
@@ -57,10 +73,30 @@ class NoteDetailViewController: UIViewController{
         noteDetailView.textView.isEditable.toggle()
         
         /// Save logic
-        if rightButtonTitle == "Редактировать" {
-            let newNote = NoteTextModel(id: "\(Date())", titleText: noteDetailView.textView.text ?? "", bodyText: "", noteDate: Date())
-            UserDefaultsManager.shared.saveData(newNote)
+        if isNewNote {
+            print("Save new note")
+            if rightButtonTitle == "Редактировать" {
+                viewModel.saveNoteText(noteDetailView) { [weak self] result in
+                    switch result {
+                    case .success(let noteText):
+                        let newNote = NoteTextModel(id: "\(Date())", titleText: noteText[0], bodyText: noteText[1], noteDate: Date())
+                        UserDefaultsManager.shared.saveData(newNote)
+                        self?.isNewNote = false
+                    case .failure:
+                        break
+                    }
+                }
+            }
+        } else {
+            if rightButtonTitle == "Редактировать" {
+                let newNote = NoteTextModel(id: viewModel.currentModel.id, titleText: (noteDetailView.textView.text + "\n") , bodyText: "", noteDate: Date())
+                if let encoded = try? JSONEncoder().encode(newNote) {
+                    UserDefaultsManager.shared.defaults.set(encoded, forKey: viewModel.currentModel.id)
+                }
+                print("The note has been edited")
+            }
         }
+        
     }
     
     private func setConstraints() {

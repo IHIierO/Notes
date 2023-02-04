@@ -54,6 +54,7 @@ class NotesViewController: UIViewController, NotesViewDelegate {
         let detailVC =  NoteDetailViewController(viewModel: viewModel)
         detailVC.textViewIsEditing = true
         detailVC.noteDetailView.textView.isEditable = true
+        detailVC.isNewNote = true
         navigationController?.pushViewController(detailVC, animated: true)
     }
     
