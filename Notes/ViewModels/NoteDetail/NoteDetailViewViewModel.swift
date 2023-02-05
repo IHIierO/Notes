@@ -25,24 +25,44 @@ final class NoteDetailViewViewModel {
         let mutableAttributedString = NSMutableAttributedString()
         let titleText = model.titleText!
         let bodyText = model.bodyText!
-        let title = NSMutableAttributedString(string: titleText)
-        title.addAttribute(NSAttributedString.Key.font, value: UIFont(name: UIFont.nameOfBoldFont.helveticaNeueBold.rawValue, size: 20)!, range: NSMakeRange(0, titleText.count))
-        let body = NSMutableAttributedString(string: bodyText)
-        body.addAttribute(NSAttributedString.Key.font, value: UIFont(name: UIFont.nameOfFont.helveticaNeue.rawValue, size: 16)!, range: NSMakeRange(0, bodyText.count))
+        let title = NSMutableAttributedString(titleText)
+        let body = NSMutableAttributedString(bodyText)
+//        let title = NSMutableAttributedString(string: titleText)
+//        title.addAttribute(NSAttributedString.Key.font, value: UIFont(name: UIFont.nameOfBoldFont.helveticaNeueBold.rawValue, size: 20)!, range: NSMakeRange(0, titleText.count))
+//        let body = NSMutableAttributedString(string: bodyText)
+//        body.addAttribute(NSAttributedString.Key.font, value: UIFont(name: UIFont.nameOfFont.helveticaNeue.rawValue, size: 16)!, range: NSMakeRange(0, bodyText.count))
         mutableAttributedString.append(title)
         mutableAttributedString.append(NSAttributedString(string: "\n"))
         mutableAttributedString.append(body)
         return mutableAttributedString
     }
     
-    public func saveNoteText(_ noteDetailView: NoteDetailView, completion: @escaping (Result<[String],Error>) -> Void) {
-        guard let text = noteDetailView.textView.text else {
+    // MARK: - delete
+//    public func saveNoteText(_ noteDetailView: NoteDetailView, completion: @escaping (Result<[String],Error>) -> Void) {
+//        guard let text = noteDetailView.textView.text else {
+//            return
+//        }
+//        let components = text.split(maxSplits: 1) { $0.isNewline }
+//        let title = components[0]
+//        let body = components[1]
+//        completion(.success([String(describing: title), String(describing: body)]))
+//    }
+    
+    public func saveNoteAttributedText(_ noteDetailView: NoteDetailView, completion: @escaping (Result<[AttributedString],Error>) -> Void) {
+        guard let text = noteDetailView.textView.attributedText else {
+            completion(.failure(URLError(.badServerResponse)))
             return
         }
-        let components = text.split(maxSplits: 1) { $0.isNewline }
+        let components = text.components(separatedBy: "\n")
         let title = components[0]
-        let body = components[1]
-        completion(.success([String(describing: title), String(describing: body)]))
+        let body = NSMutableAttributedString()
+        for i in 1...components.count-1  {
+            let bodyString = components[i]
+            body.append(bodyString)
+            body.append(NSAttributedString(string: "\n"))
+        }
+        
+        completion(.success([AttributedString(title), AttributedString(body)]))
     }
     
     public func openMenuController(_ sourceController: UIViewController, _ delegate: UIPopoverPresentationControllerDelegate, viewController: UIViewController, sender: UIButton) {

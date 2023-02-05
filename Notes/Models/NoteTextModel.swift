@@ -9,7 +9,7 @@ import Foundation
 
 struct NoteTextModel: Codable {
     var id: String
-    var titleText: String?
-    var bodyText: String?
+    var titleText: AttributedString?
+    var bodyText: AttributedString?
     let noteDate: Date
 }

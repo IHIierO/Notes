@@ -54,4 +54,33 @@ extension UIFont {
     }
 }
 
+extension NSAttributedString {
+    func components(separatedBy separator: String) -> [NSAttributedString] {
+        var result = [NSAttributedString]()
+        let separatedStrings = string.components(separatedBy: separator)
+        var range = NSRange(location: 0, length: 0)
+        for string in separatedStrings {
+            range.length = string.count
+            let attributedString = attributedSubstring(from: range)
+            result.append(attributedString)
+            range.location += range.length + separator.count
+        }
+        return result
+    }
+    
+    public func trimWhiteSpace() -> NSAttributedString {
+           let invertedSet = CharacterSet.whitespacesAndNewlines.inverted
+           let startRange = string.utf16.description.rangeOfCharacter(from: invertedSet)
+           let endRange = string.utf16.description.rangeOfCharacter(from: invertedSet, options: .backwards)
+           guard let startLocation = startRange?.upperBound, let endLocation = endRange?.lowerBound else {
+               return NSAttributedString(string: string)
+           }
+
+           let location = string.utf16.distance(from: string.startIndex, to: startLocation) - 1
+           let length = string.utf16.distance(from: startLocation, to: endLocation) + 2
+           let range = NSRange(location: location, length: length)
+           return attributedSubstring(from: range)
+       }
+}
+
 

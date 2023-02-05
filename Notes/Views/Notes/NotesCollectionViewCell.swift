@@ -54,8 +54,11 @@ class NotesCollectionViewCell: UICollectionViewCell {
     }
     
     func config(model: NoteTextModel){
-        noteTitle.text = model.titleText
-        noteBody.text = model.bodyText?.trimmingCharacters(in: .newlines)
+        guard let title = model.titleText, let body = model.bodyText else {
+            return
+        }
+        noteTitle.attributedText = NSMutableAttributedString(title)
+        noteBody.attributedText = NSMutableAttributedString(body).trimWhiteSpace()
         noteDate.text = CustomDate.dateString(date: model.noteDate)
     }
     

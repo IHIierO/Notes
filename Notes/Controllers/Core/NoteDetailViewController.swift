@@ -41,12 +41,12 @@ class NoteDetailViewController: UIViewController{
         super.viewDidLoad()
         setupController()
         setConstraints()
-        print("Current model: - \(viewModel.currentModel)")
+        //print("Current model: - \(viewModel.currentModel)")
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        print("Current model: - \(viewModel.currentModel)")
+        //print("Current model: - \(viewModel.currentModel)")
     }
     
     private func setupController() {
@@ -56,19 +56,23 @@ class NoteDetailViewController: UIViewController{
         noteDetailView.delegate = self
         let editingButton = UIBarButtonItem(title: rightButtonTitle, style: .plain, target: self, action: #selector(isEditingTap))
         //MARK: - test split text
+        // MARK: - delete
         let splitButton = UIBarButtonItem(title: "Split", style: .plain, target: self, action: #selector(splitText))
         navigationItem.rightBarButtonItems = [editingButton, splitButton]
     }
     
+    // MARK: - delete
     @objc private func splitText() {
-        
-//        let range = noteDetailView.textView.selectedRange
-//         let string = NSMutableAttributedString(attributedString:
-//                                                    noteDetailView.textView.attributedText)
-//        let attributes = [NSAttributedString.Key.font : UIFont(name: UIFont.nameOfBoldFont.helveticaNeueBold.rawValue, size: 20)!]
-//        string.addAttributes(attributes, range: noteDetailView.textView.selectedRange)
-//        noteDetailView.textView.attributedText = string
-//        noteDetailView.textView.selectedRange = range
+//        viewModel.saveNoteAttributedText(noteDetailView) { [weak self] result in
+//            switch result {
+//            case .success(let text):
+//                let newNote = NoteTextModel(id: "\(Date())", titleText: "", bodyText: text, noteDate: Date())
+//                UserDefaultsManager.shared.saveData(newNote)
+//                self?.isNewNote = false
+//            case .failure:
+//                break
+//            }
+//        }
         
     }
     
@@ -81,7 +85,7 @@ class NoteDetailViewController: UIViewController{
         if isNewNote {
             print("Save new note")
             if rightButtonTitle == "Редактировать" {
-                viewModel.saveNoteText(noteDetailView) { [weak self] result in
+                viewModel.saveNoteAttributedText(noteDetailView) { [weak self] result in
                     switch result {
                     case .success(let noteText):
                         let newNote = NoteTextModel(id: "\(Date())", titleText: noteText[0], bodyText: noteText[1], noteDate: Date())
@@ -96,7 +100,7 @@ class NoteDetailViewController: UIViewController{
             /// Remade logic
             if rightButtonTitle == "Редактировать" {
                 print("Remade current note")
-                viewModel.saveNoteText(noteDetailView) { [weak self] result in
+                viewModel.saveNoteAttributedText(noteDetailView) { [weak self] result in
                     guard let strongSelf = self else {
                         return
                     }
