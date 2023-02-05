@@ -26,9 +26,9 @@ final class NoteDetailViewViewModel {
         let titleText = model.titleText!
         let bodyText = model.bodyText!
         let title = NSMutableAttributedString(string: titleText)
-        title.addAttribute(NSAttributedString.Key.font, value: UIFont(name: UIFont.nameOf.HelveticaNeueBold.rawValue, size: 20)!, range: NSMakeRange(0, titleText.count))
+        title.addAttribute(NSAttributedString.Key.font, value: UIFont(name: UIFont.nameOfBoldFont.helveticaNeueBold.rawValue, size: 20)!, range: NSMakeRange(0, titleText.count))
         let body = NSMutableAttributedString(string: bodyText)
-        body.addAttribute(NSAttributedString.Key.font, value: UIFont(name: UIFont.nameOf.HelveticaNeue.rawValue, size: 16)!, range: NSMakeRange(0, bodyText.count))
+        body.addAttribute(NSAttributedString.Key.font, value: UIFont(name: UIFont.nameOfFont.helveticaNeue.rawValue, size: 16)!, range: NSMakeRange(0, bodyText.count))
         mutableAttributedString.append(title)
         mutableAttributedString.append(NSAttributedString(string: "\n"))
         mutableAttributedString.append(body)
@@ -45,4 +45,19 @@ final class NoteDetailViewViewModel {
         completion(.success([String(describing: title), String(describing: body)]))
     }
     
+    
+    public func openMenuController(_ sourceController: UIViewController, _ delegate: UIPopoverPresentationControllerDelegate, viewController: UIViewController, sender: UIButton) {
+        let viewController = viewController
+        viewController.modalPresentationStyle = .popover
+        viewController.navigationItem.largeTitleDisplayMode = .never
+        viewController.preferredContentSize = CGSize(width: 150, height: 200)
+        
+        if let popoverPresentationController = viewController.popoverPresentationController {
+            popoverPresentationController.permittedArrowDirections = .right
+            popoverPresentationController.sourceView = sender
+            popoverPresentationController.sourceRect = sender.bounds
+            popoverPresentationController.delegate = delegate
+        }
+            sourceController.present(viewController, animated: true, completion: nil)
+    }
 }

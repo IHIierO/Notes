@@ -53,7 +53,7 @@ class NoteDetailViewController: UIViewController{
         view.backgroundColor = .systemBackground
         title = "Single Note"
         view.addSubview(noteDetailView)
-        
+        noteDetailView.delegate = self
         let editingButton = UIBarButtonItem(title: rightButtonTitle, style: .plain, target: self, action: #selector(isEditingTap))
         //MARK: - test split text
         let splitButton = UIBarButtonItem(title: "Split", style: .plain, target: self, action: #selector(splitText))
@@ -133,5 +133,28 @@ class NoteDetailViewController: UIViewController{
             noteDetailView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
         ])
     }
+}
+
+// MARK: - NoteDetailViewDelegate
+extension NoteDetailViewController: NoteDetailViewDelegate {
+    func presentSizeMenu(sender: UIButton) {
+        viewModel.openMenuController(self, self, viewController: ChangeSizeViewController(), sender: sender)
+        print("Size menu open")
+    }
     
+    func presentFontMenu(sender: UIButton) {
+        viewModel.openMenuController(self, self, viewController: ChangeFontViewController(viewModel: ChangeFontViewViewModel()), sender: sender)
+        print("Text menu open")
+    }
+    
+    
+    func textViewIsEditable() {
+        
+    }
+}
+
+extension NoteDetailViewController: UIPopoverPresentationControllerDelegate {
+    func adaptivePresentationStyle(for controller: UIPresentationController, traitCollection: UITraitCollection) -> UIModalPresentationStyle {
+        return .none
+    }
 }

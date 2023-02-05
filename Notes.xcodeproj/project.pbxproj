@@ -25,6 +25,10 @@
 		395BE400298C099600DCD96C /* NoteTextModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 395BE3FF298C099600DCD96C /* NoteTextModel.swift */; };
 		395BE402298D0BC900DCD96C /* UserDefaultsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 395BE401298D0BC900DCD96C /* UserDefaultsManager.swift */; };
 		395BE404298E7B5A00DCD96C /* CustomDate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 395BE403298E7B5A00DCD96C /* CustomDate.swift */; };
+		395BE408298FB59E00DCD96C /* ChangeFontViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 395BE407298FB59E00DCD96C /* ChangeFontViewController.swift */; };
+		395BE40A298FBB7A00DCD96C /* ChangeSizeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 395BE409298FBB7A00DCD96C /* ChangeSizeViewController.swift */; };
+		395BE40D298FBC6600DCD96C /* ChangeFontView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 395BE40C298FBC6600DCD96C /* ChangeFontView.swift */; };
+		395BE410298FBD1D00DCD96C /* ChangeFontViewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 395BE40F298FBD1D00DCD96C /* ChangeFontViewViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -48,6 +52,10 @@
 		395BE3FF298C099600DCD96C /* NoteTextModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteTextModel.swift; sourceTree = "<group>"; };
 		395BE401298D0BC900DCD96C /* UserDefaultsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsManager.swift; sourceTree = "<group>"; };
 		395BE403298E7B5A00DCD96C /* CustomDate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomDate.swift; sourceTree = "<group>"; };
+		395BE407298FB59E00DCD96C /* ChangeFontViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeFontViewController.swift; sourceTree = "<group>"; };
+		395BE409298FBB7A00DCD96C /* ChangeSizeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeSizeViewController.swift; sourceTree = "<group>"; };
+		395BE40C298FBC6600DCD96C /* ChangeFontView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeFontView.swift; sourceTree = "<group>"; };
+		395BE40F298FBD1D00DCD96C /* ChangeFontViewViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeFontViewViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -94,8 +102,8 @@
 		395BE3E3298BBBFD00DCD96C /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				395BE3D0298BBA0400DCD96C /* NotesViewController.swift */,
-				395BE3F6298BD72B00DCD96C /* NoteDetailViewController.swift */,
+				395BE405298FB56C00DCD96C /* Core */,
+				395BE406298FB57700DCD96C /* MenuControllers */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -105,6 +113,7 @@
 			children = (
 				395BE3FC298BD82900DCD96C /* NoteDetail */,
 				395BE3F8298BD74B00DCD96C /* Notes */,
+				395BE40E298FBD0600DCD96C /* Menu */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -114,6 +123,7 @@
 			children = (
 				395BE3F9298BD75E00DCD96C /* NoteDetail */,
 				395BE3F1298BD33E00DCD96C /* Notes */,
+				395BE40B298FBC4B00DCD96C /* MenuViews */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -181,6 +191,40 @@
 				395BE3FD298BD83400DCD96C /* NoteDetailViewViewModel.swift */,
 			);
 			path = NoteDetail;
+			sourceTree = "<group>";
+		};
+		395BE405298FB56C00DCD96C /* Core */ = {
+			isa = PBXGroup;
+			children = (
+				395BE3D0298BBA0400DCD96C /* NotesViewController.swift */,
+				395BE3F6298BD72B00DCD96C /* NoteDetailViewController.swift */,
+			);
+			path = Core;
+			sourceTree = "<group>";
+		};
+		395BE406298FB57700DCD96C /* MenuControllers */ = {
+			isa = PBXGroup;
+			children = (
+				395BE407298FB59E00DCD96C /* ChangeFontViewController.swift */,
+				395BE409298FBB7A00DCD96C /* ChangeSizeViewController.swift */,
+			);
+			path = MenuControllers;
+			sourceTree = "<group>";
+		};
+		395BE40B298FBC4B00DCD96C /* MenuViews */ = {
+			isa = PBXGroup;
+			children = (
+				395BE40C298FBC6600DCD96C /* ChangeFontView.swift */,
+			);
+			path = MenuViews;
+			sourceTree = "<group>";
+		};
+		395BE40E298FBD0600DCD96C /* Menu */ = {
+			isa = PBXGroup;
+			children = (
+				395BE40F298FBD1D00DCD96C /* ChangeFontViewViewModel.swift */,
+			);
+			path = Menu;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -255,20 +299,24 @@
 			files = (
 				395BE3EE298BC27300DCD96C /* NotesView.swift in Sources */,
 				395BE3D1298BBA0400DCD96C /* NotesViewController.swift in Sources */,
+				395BE408298FB59E00DCD96C /* ChangeFontViewController.swift in Sources */,
 				395BE3F7298BD72B00DCD96C /* NoteDetailViewController.swift in Sources */,
 				395BE3FB298BD78F00DCD96C /* NoteDetailView.swift in Sources */,
 				395BE404298E7B5A00DCD96C /* CustomDate.swift in Sources */,
 				395BE3EC298BC1F900DCD96C /* Extensions.swift in Sources */,
 				395BE3F0298BC30200DCD96C /* NotesViewViewModel.swift in Sources */,
 				395BE3CD298BBA0400DCD96C /* AppDelegate.swift in Sources */,
+				395BE40A298FBB7A00DCD96C /* ChangeSizeViewController.swift in Sources */,
 				395BE3EA298BC19000DCD96C /* CompositionalLayoutHelpers.swift in Sources */,
 				395BE3F5298BD45C00DCD96C /* DefaultUIClasses.swift in Sources */,
+				395BE410298FBD1D00DCD96C /* ChangeFontViewViewModel.swift in Sources */,
 				395BE3CF298BBA0400DCD96C /* SceneDelegate.swift in Sources */,
 				395BE3FE298BD83400DCD96C /* NoteDetailViewViewModel.swift in Sources */,
 				395BE402298D0BC900DCD96C /* UserDefaultsManager.swift in Sources */,
 				395BE3F3298BD35300DCD96C /* NotesCollectionViewCell.swift in Sources */,
 				395BE400298C099600DCD96C /* NoteTextModel.swift in Sources */,
 				395BE3D7298BBA0400DCD96C /* Notes.xcdatamodeld in Sources */,
+				395BE40D298FBC6600DCD96C /* ChangeFontView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

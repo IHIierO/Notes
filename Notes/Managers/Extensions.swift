@@ -30,10 +30,27 @@ extension UIStackView {
 }
 
 extension UIFont {
-    public enum nameOf: String {
-        case Didot = "Didot"
-        case HelveticaNeueBold = "HelveticaNeue-Bold"
-        case HelveticaNeue = "HelveticaNeue"
+    public enum nameOfFont: String, CaseIterable {
+        case didot = "Didot"
+        case helveticaNeue = "HelveticaNeue"
+        
+        var font: String {
+            switch self {
+            case .didot, .helveticaNeue:
+                return rawValue
+            }
+        }
+    }
+    
+    public enum nameOfBoldFont: String, CaseIterable {
+        case helveticaNeueBold = "HelveticaNeue-Bold"
+        
+        var font: String {
+            switch self {
+            case .helveticaNeueBold:
+                return rawValue
+            }
+        }
     }
 }
 

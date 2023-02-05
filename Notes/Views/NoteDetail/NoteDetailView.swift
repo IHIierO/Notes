@@ -9,6 +9,8 @@ import UIKit
 
 protocol NoteDetailViewDelegate: AnyObject {
     func textViewIsEditable()
+    func presentFontMenu(sender: UIButton)
+    func presentSizeMenu(sender: UIButton)
 }
 
 final class NoteDetailView: UIView {
@@ -17,11 +19,14 @@ final class NoteDetailView: UIView {
     
     private let viewModel: NoteDetailViewViewModel
     
+    private let changeFontVieModel: ChangeFontViewViewModel
+    
     public let textView: UITextView = {
        let textView = UITextView()
-        textView.backgroundColor = .red
         textView.isEditable = false
-        textView.font = UIFont(name: UIFont.nameOf.HelveticaNeueBold.rawValue, size: 20)
+        let attributesBold = [NSAttributedString.Key.font : UIFont(name: UIFont.nameOfBoldFont.helveticaNeueBold.rawValue, size: 20)!]
+        textView.attributedText = NSAttributedString(string: "")
+        textView.typingAttributes = attributesBold
         textView.translatesAutoresizingMaskIntoConstraints = false
         return textView
     }()
@@ -53,7 +58,7 @@ final class NoteDetailView: UIView {
         button.configuration?.baseBackgroundColor = .blue
         var title = AttributedString.init("A")
         //attText.obliqueness = 0.2 // To set the slant of the text
-        title.font = UIFont(name: UIFont.nameOf.Didot.rawValue, size: 20)
+        title.font = UIFont(name: UIFont.nameOfFont.didot.rawValue, size: 20)
         button.configuration?.attributedTitle = title
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
@@ -77,12 +82,15 @@ final class NoteDetailView: UIView {
         return button
     }()
     
+    // MARK: - Init
     init(frame: CGRect, viewModel: NoteDetailViewViewModel) {
         self.viewModel = viewModel
+        self.changeFontVieModel = ChangeFontViewViewModel()
         super.init(frame: frame)
         textView.attributedText = viewModel.displayNote
         setupView()
         setConstraints()
+        setupMenu()
     }
     
     required init?(coder: NSCoder) {
@@ -96,6 +104,20 @@ final class NoteDetailView: UIView {
         menuContainer.addArrangedSubview(menuButton)
         menuButton.addTarget(self, action: #selector(menuContainerOpenTap), for: .touchUpInside)
         textView.delegate = self
+    }
+    
+    private func setupMenu() {
+        fontName.addTarget(self, action: #selector(changeFont), for: .touchUpInside)
+        fontSize.addTarget(self, action: #selector(changeSize), for: .touchUpInside)
+        changeFontVieModel.delegate = self
+    }
+    
+    @objc private func changeFont(sender: UIButton) {
+        delegate?.presentFontMenu(sender: sender)
+    }
+    
+    @objc private func changeSize(sender: UIButton) {
+        delegate?.presentSizeMenu(sender: sender)
     }
     
     private func setConstraints() {
@@ -137,22 +159,21 @@ final class NoteDetailView: UIView {
     }
 }
 
+// MARK: - UITextViewDelegate
 extension NoteDetailView: UITextViewDelegate {
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
-//        if let character = text.last, character.isNewline {
-//                print("New Line")
-//
-//            }
-//
-        
-            return true
+        if let character = text.last, character.isNewline {
+            print("New Line")
+            let attributesNormal = [NSAttributedString.Key.font : UIFont(name: UIFont.nameOfFont.helveticaNeue.rawValue, size: 16)!]
+            textView.typingAttributes = attributesNormal
+        }
+        return true
     }
-    
-//    func textViewDidChange(_ textView: UITextView) {
-//
-//        if textView.text.last == "\n" {
-//
-//        }
-//
-//    }
+}
+
+
+extension NoteDetailView: ChangeFontViewViewModelDelegate {
+    func didChangeFont(font: String) {
+        print("In NoteDetailView font: - \(font)")
+    }
 }

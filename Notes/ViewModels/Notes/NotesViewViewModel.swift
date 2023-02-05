@@ -16,7 +16,6 @@ final class NotesViewViewModel: NSObject {
     
     public weak var delegate: NotesViewViewModelDelegate?
    
-    
     public var models: [NoteTextModel] = []
     
     override init(){
