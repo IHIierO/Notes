@@ -45,12 +45,14 @@ final class NoteDetailViewViewModel {
         completion(.success([String(describing: title), String(describing: body)]))
     }
     
-    
     public func openMenuController(_ sourceController: UIViewController, _ delegate: UIPopoverPresentationControllerDelegate, viewController: UIViewController, sender: UIButton) {
         let viewController = viewController
         viewController.modalPresentationStyle = .popover
         viewController.navigationItem.largeTitleDisplayMode = .never
         viewController.preferredContentSize = CGSize(width: 150, height: 200)
+        if let vc = viewController as? ChangeFontViewController {
+            vc.delegate = (sourceController as! any ChangeFontViewControllerDelegate)
+        }
         
         if let popoverPresentationController = viewController.popoverPresentationController {
             popoverPresentationController.permittedArrowDirections = .right
@@ -59,5 +61,15 @@ final class NoteDetailViewViewModel {
             popoverPresentationController.delegate = delegate
         }
             sourceController.present(viewController, animated: true, completion: nil)
+    }
+    
+    public func changeFont(textView: UITextView, font: String) {
+        let range = textView.selectedRange
+         let string = NSMutableAttributedString(attributedString:
+                                                    textView.attributedText)
+        let attributes = [NSAttributedString.Key.font: UIFont(name: font, size: 16)!]
+        string.addAttributes(attributes, range: textView.selectedRange)
+        textView.attributedText = string
+        textView.selectedRange = range
     }
 }

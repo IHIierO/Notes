@@ -7,10 +7,16 @@
 
 import UIKit
 
+protocol ChangeFontViewControllerDelegate: AnyObject {
+    func didChangeFont(font: String)
+}
+
 final class ChangeFontViewController: UIViewController {
     
     private let viewModel: ChangeFontViewViewModel
     private let changeFontView: ChangeFontView
+    
+    public weak var delegate: ChangeFontViewControllerDelegate?
     
     init(viewModel: ChangeFontViewViewModel) {
         self.viewModel = viewModel
@@ -27,6 +33,7 @@ final class ChangeFontViewController: UIViewController {
         view.backgroundColor = .yellow
         view.addSubview(changeFontView)
         setConstraints()
+        changeFontView.delegate = self
     }
     
     private func setConstraints() {
@@ -36,5 +43,12 @@ final class ChangeFontViewController: UIViewController {
             changeFontView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor),
             changeFontView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
         ])
+    }
+}
+
+extension ChangeFontViewController: ChangeFontViewDelegate {
+    func didChangeFont(font: String) {
+        print("In ChangeFontViewController font: - \(font)")
+        delegate?.didChangeFont(font: font)
     }
 }

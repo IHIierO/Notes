@@ -19,8 +19,6 @@ final class NoteDetailView: UIView {
     
     private let viewModel: NoteDetailViewViewModel
     
-    private let changeFontVieModel: ChangeFontViewViewModel
-    
     public let textView: UITextView = {
        let textView = UITextView()
         textView.isEditable = false
@@ -85,7 +83,6 @@ final class NoteDetailView: UIView {
     // MARK: - Init
     init(frame: CGRect, viewModel: NoteDetailViewViewModel) {
         self.viewModel = viewModel
-        self.changeFontVieModel = ChangeFontViewViewModel()
         super.init(frame: frame)
         textView.attributedText = viewModel.displayNote
         setupView()
@@ -109,7 +106,6 @@ final class NoteDetailView: UIView {
     private func setupMenu() {
         fontName.addTarget(self, action: #selector(changeFont), for: .touchUpInside)
         fontSize.addTarget(self, action: #selector(changeSize), for: .touchUpInside)
-        changeFontVieModel.delegate = self
     }
     
     @objc private func changeFont(sender: UIButton) {
@@ -168,12 +164,5 @@ extension NoteDetailView: UITextViewDelegate {
             textView.typingAttributes = attributesNormal
         }
         return true
-    }
-}
-
-
-extension NoteDetailView: ChangeFontViewViewModelDelegate {
-    func didChangeFont(font: String) {
-        print("In NoteDetailView font: - \(font)")
     }
 }

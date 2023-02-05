@@ -61,18 +61,15 @@ class NoteDetailViewController: UIViewController{
     }
     
     @objc private func splitText() {
-        viewModel.saveNoteText(noteDetailView) { [self] result in
-            switch result {
-            case .success(let noteText):
-                print("Remade current note")
-                let newNote = NoteTextModel(id: viewModel.currentModel.id, titleText: noteText[0], bodyText: noteText[1], noteDate: Date())
-                UserDefaultsManager.shared.deleteNote(model: newNote)
-                UserDefaultsManager.shared.saveData(newNote)
-                print("Remade complite")
-            case .failure:
-                break
-            }
-        }
+        
+//        let range = noteDetailView.textView.selectedRange
+//         let string = NSMutableAttributedString(attributedString:
+//                                                    noteDetailView.textView.attributedText)
+//        let attributes = [NSAttributedString.Key.font : UIFont(name: UIFont.nameOfBoldFont.helveticaNeueBold.rawValue, size: 20)!]
+//        string.addAttributes(attributes, range: noteDetailView.textView.selectedRange)
+//        noteDetailView.textView.attributedText = string
+//        noteDetailView.textView.selectedRange = range
+        
     }
     
     @objc private func isEditingTap() {
@@ -138,8 +135,8 @@ class NoteDetailViewController: UIViewController{
 // MARK: - NoteDetailViewDelegate
 extension NoteDetailViewController: NoteDetailViewDelegate {
     func presentSizeMenu(sender: UIButton) {
-        viewModel.openMenuController(self, self, viewController: ChangeSizeViewController(), sender: sender)
-        print("Size menu open")
+//        viewModel.openMenuController(self, self, viewController: ChangeSizeViewController(), sender: sender)
+//        print("Size menu open")
     }
     
     func presentFontMenu(sender: UIButton) {
@@ -157,4 +154,12 @@ extension NoteDetailViewController: UIPopoverPresentationControllerDelegate {
     func adaptivePresentationStyle(for controller: UIPresentationController, traitCollection: UITraitCollection) -> UIModalPresentationStyle {
         return .none
     }
+}
+
+extension NoteDetailViewController: ChangeFontViewControllerDelegate {
+    func didChangeFont(font: String) {
+        print("In NoteDetailViewController font: - \(font)")
+        viewModel.changeFont(textView: noteDetailView.textView, font: font)
+    }
+    
 }
