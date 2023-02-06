@@ -8,7 +8,7 @@
 import UIKit
 
 protocol ChangeParametersViewDelegate: AnyObject {
-    func didChangeWeight()
+    func didChangeTrait(_ trait: UIFontDescriptor.SymbolicTraits)
     func didChangeStyle(_ style: NSAttributedString.Key)
 }
 
@@ -104,10 +104,10 @@ final class ChangeParametersView: UIView {
     }
     
     @objc private func changeWeight(sender: UIButton) {
-        delegate?.didChangeWeight()
+        delegate?.didChangeTrait(.traitBold)
     }
     @objc private func changeObliqueness() {
-        
+        delegate?.didChangeTrait(.traitItalic)
     }
     @objc private func changeUnderline() {
         delegate?.didChangeStyle(.underlineStyle)

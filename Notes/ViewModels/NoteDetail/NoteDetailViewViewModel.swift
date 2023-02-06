@@ -103,10 +103,11 @@ final class NoteDetailViewViewModel {
         let range = textView.selectedRange
          let string = NSMutableAttributedString(attributedString:
                                                     textView.attributedText)
-        let attributes = [NSAttributedString.Key.font: UIFont(name: font, size: 16)!]
+        let attributes = [NSAttributedString.Key.font: UIFont(name: UIFont.nameOfFont(rawValue: font)!.regularFont, size: 16)!]
         string.addAttributes(attributes, range: textView.selectedRange)
         textView.attributedText = string
         textView.selectedRange = range
+        #warning("Change all !")
     }
     
     
@@ -131,45 +132,58 @@ final class NoteDetailViewViewModel {
         
     }
     
-    // MARK: - Change weight
+    // MARK: - Change Trait
     /// - Parameters:
     ///   - textView: NoteDetailView textView
-    ///   - weight: font weight
-    public func changeWeight(textView: UITextView, weight: UIFont.nameOfBoldFont) {
+    ///   - trait: choose between .traitBold, .traitItalic
+    public func changeTrait(textView: UITextView, trait: UIFontDescriptor.SymbolicTraits) {
         let range = textView.selectedRange
         let string = NSMutableAttributedString(attributedString:
                                                 textView.attributedText)
         
-        var fontName = ""
         string.enumerateAttribute(.font, in: range) { font, _, _ in
             if let font = font as? UIFont {
-                if font.fontDescriptor.symbolicTraits.contains(.traitBold) {
+                if font.fontDescriptor.symbolicTraits.contains(trait) {
                     let components = font.fontName.split(separator: "-")
-                    print("Components: - \(components)")
-                    let regularFont = String(components[0])
-                    let attributes = [NSAttributedString.Key.font: UIFont(name: regularFont, size: font.pointSize)!]
+                    print("Regular Components: - \(components)")
+                    var regularFont = String(components[0])
+                    if regularFont == "Avenir" {
+                        regularFont = regularFont + "-" + "Book"
+                    }
+                    print("Regular Font from textView: - \(regularFont)")
+                    let attributes = [NSAttributedString.Key.font: UIFont(name: UIFont.nameOfFont(rawValue: regularFont)!.regularFont, size: font.pointSize)!]
                     string.addAttributes(attributes, range: textView.selectedRange)
                     textView.attributedText = string
                     textView.selectedRange = range
-                    print("Font from textView: - \(regularFont) = bold")
                 } else {
-                    let components = font.fontName.split(separator: "M")
-                    if components.count == 1 {
-                        fontName = font.fontName
-                        let attributes = [NSAttributedString.Key.font: UIFont(name: fontName + weight.font, size: font.pointSize)!]
-                        string.addAttributes(attributes, range: textView.selectedRange)
-                        textView.attributedText = string
-                        textView.selectedRange = range
-                        print("Font from textView: - \(fontName)")
-                    } else {
-                        print("Bad font")
-                        let goodFont = String(components[0])
-                        let attributes = [NSAttributedString.Key.font: UIFont(name: goodFont + weight.font + "MT", size: font.pointSize)!]
-                        string.addAttributes(attributes, range: textView.selectedRange)
-                        textView.attributedText = string
-                        textView.selectedRange = range
-                        print("Font from textView: - \(goodFont + weight.font + "MT")")
+                    
+                    var traitFont = UIFont()
+                    if trait == .traitBold {
+                        let components = font.fontName.split(separator: "M")
+                        var regularFont = String(components[0])
+                        print("Bold Components: - \(components)")
+                        #warning("change var name")
+                        let ffffont = regularFont.split(separator: "-")
+                        print("Bold rawValue Components: - \(ffffont)")
+                        if regularFont == "Arial-Italic" {
+                            regularFont = "Arial"
+                        }
+                        traitFont = UIFont(name: UIFont.nameOfFont(rawValue: String(ffffont[0]))!.boldFont, size: font.pointSize)!
+                    } else if trait == .traitItalic {
+                        let components = font.fontName.split(separator: "-")
+                        var regularFont = String(components[0])
+                        print("Italic Components: - \(components)")
+                        if regularFont == "Arial-Italic" {
+                            regularFont = "Arial"
+                        }
+                        traitFont = UIFont(name: UIFont.nameOfFont(rawValue: regularFont)!.italicFont, size: font.pointSize)!
                     }
+                    
+                    print("Regular Font from textView: - \(traitFont.fontName) = bold")
+                    let attributes = [NSAttributedString.Key.font: traitFont]
+                    string.addAttributes(attributes, range: textView.selectedRange)
+                    textView.attributedText = string
+                    textView.selectedRange = range
                 }
             }
         }

@@ -157,6 +157,16 @@ extension NoteDetailViewController: UIPopoverPresentationControllerDelegate {
 
 // MARK: - Delegates for change: Font, Size
 extension NoteDetailViewController: ChangeFontViewControllerDelegate, ChangeSizeViewControllerDelegate, ChangeParametersViewControllerDelegate {
+    func didChangeTrait(_ trait: UIFontDescriptor.SymbolicTraits) {
+        if trait == .traitBold {
+            print("In NoteDetailViewController bold button tap: - true")
+            viewModel.changeTrait(textView: noteDetailView.textView, trait: .traitBold)
+        } else if trait == .traitItalic {
+            print("In NoteDetailViewController italic button tap: - true")
+            viewModel.changeTrait(textView: noteDetailView.textView, trait: .traitItalic)
+        }
+    }
+    
     func didChangeStyle(_ style: NSAttributedString.Key) {
         if style == .strikethroughStyle {
             print("In NoteDetailViewController strike button tap: - true")
@@ -165,13 +175,6 @@ extension NoteDetailViewController: ChangeFontViewControllerDelegate, ChangeSize
             print("In NoteDetailViewController underLine button tap: - true")
             viewModel.changeStyle(textView: noteDetailView.textView, style: .underlineStyle)
         }
-    }
-    
-    
-    
-    func didChangeWeight() {
-        print("In NoteDetailViewController weight button tap: - true")
-        viewModel.changeWeight(textView: noteDetailView.textView, weight: .bold)
     }
     
     func didChangeFont(font: String) {

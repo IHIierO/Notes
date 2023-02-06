@@ -8,7 +8,7 @@
 import UIKit
 
 protocol ChangeParametersViewControllerDelegate: AnyObject {
-    func didChangeWeight()
+    func didChangeTrait(_ trait: UIFontDescriptor.SymbolicTraits)
     func didChangeStyle(_ style: NSAttributedString.Key)
 }
 
@@ -49,11 +49,13 @@ final class ChangeParametersViewController: UIViewController {
 }
 
 extension ChangeParametersViewController: ChangeParametersViewDelegate {
+    func didChangeTrait(_ trait: UIFontDescriptor.SymbolicTraits) {
+        delegate?.didChangeTrait(trait)
+    }
+    
     func didChangeStyle(_ style: NSAttributedString.Key) {
         delegate?.didChangeStyle(style)
     }
     
-    func didChangeWeight() {
-        delegate?.didChangeWeight()
-    }
+    
 }

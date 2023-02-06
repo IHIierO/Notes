@@ -35,24 +35,60 @@ extension UIStackView {
 extension UIFont {
     
     public enum nameOfFont: String, CaseIterable {
-        case arial = "ArialMT"
-        case avenir = "Avenir Book"
+        case arial = "Arial"
+        case avenir = "Avenir-Book"
+        case baskerville = "Baskerville"
         case didot = "Didot"
         case georgia = "Georgia"
         case helveticaNeue = "HelveticaNeue"
-        case timesNewRoman = "TimesNewRomanPSMT"
+        case timesNewRoman = "TimesNewRomanPS"
         
         
         var font: String {
             switch self {
-            case .didot, .georgia, .helveticaNeue:
+            case .arial, .baskerville, .didot, .georgia, .helveticaNeue:
                 return rawValue
-            case .timesNewRoman:
-                return "TimesNewRoman"
-            case .arial:
-                return "Arial"
             case .avenir:
                 return "Avenir"
+            case .timesNewRoman:
+                return "TimesNewRoman"
+            }
+        }
+        
+        var regularFont: String {
+            switch self {
+            case .avenir, .baskerville, .didot, .georgia, .helveticaNeue:
+                return rawValue
+            case .arial:
+                return rawValue + "MT"
+            case .timesNewRoman:
+                return rawValue + "MT"
+            }
+        }
+        
+        var boldFont: String {
+            switch self {
+            case .baskerville, .didot, .georgia, .helveticaNeue:
+                return rawValue + "-" + "Bold"
+            case .arial:
+                return "Arial-BoldMT"
+            case .avenir:
+                return "Avenir-Black"
+            case .timesNewRoman:
+                return "TimesNewRomanPS-BoldMT"
+            }
+        }
+        
+        var italicFont: String {
+            switch self {
+            case .baskerville, .didot, .georgia, .helveticaNeue:
+                return rawValue + "-" + "Italic"
+            case .arial:
+                return "Arial-ItalicMT"
+            case .avenir:
+                return "Avenir-BookOblique"
+            case .timesNewRoman:
+                return "TimesNewRomanPS-ItalicMT"
             }
         }
     }
