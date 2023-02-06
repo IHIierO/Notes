@@ -11,6 +11,7 @@ protocol NoteDetailViewDelegate: AnyObject {
     func textViewIsEditable()
     func presentFontMenu(sender: UIButton)
     func presentSizeMenu(sender: UIButton)
+    func presentParametersMenu(sender: UIButton)
 }
 
 final class NoteDetailView: UIView {
@@ -34,7 +35,7 @@ final class NoteDetailView: UIView {
        let container = UIStackView()
         container.axis = .vertical
         container.distribution = .fillEqually
-        container.alignment = .fill
+        container.spacing = 2
         container.layer.cornerRadius = 12
         container.translatesAutoresizingMaskIntoConstraints = false
         return container
@@ -70,7 +71,7 @@ final class NoteDetailView: UIView {
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
-    private let fontWeight: UIButton = {
+    private let fontParameters: UIButton = {
        let button = UIButton(frame: CGRect(x: 0, y: 0, width: 50, height: 50))
         button.configuration = .filled()
         button.configuration?.baseBackgroundColor = .systemMint
@@ -104,9 +105,11 @@ final class NoteDetailView: UIView {
         textView.delegate = self
     }
     
+    // MARK: - setupMenu
     private func setupMenu() {
         fontName.addTarget(self, action: #selector(changeFont), for: .touchUpInside)
         fontSize.addTarget(self, action: #selector(changeSize), for: .touchUpInside)
+        fontParameters.addTarget(self, action: #selector(changeParameters), for: .touchUpInside)
     }
     
     @objc private func changeFont(sender: UIButton) {
@@ -115,6 +118,10 @@ final class NoteDetailView: UIView {
     
     @objc private func changeSize(sender: UIButton) {
         delegate?.presentSizeMenu(sender: sender)
+    }
+    
+    @objc private func changeParameters(sender: UIButton) {
+        delegate?.presentParametersMenu(sender: sender)
     }
     
     private func setConstraints() {
@@ -141,14 +148,14 @@ final class NoteDetailView: UIView {
             menuContainerOpen.isActive = true
             menuContainerOpen.priority = UILayoutPriority(999)
             menuContainerClosed.isActive = false
-            menuContainer.addArrangedSubviews(fontName, fontSize, fontWeight)
+            menuContainer.addArrangedSubviews(fontName, fontSize, fontParameters)
         } else {
             guard let menuContainerOpen = menuContainerOpen, let menuContainerClosed = menuContainerClosed else {return}
             menuContainerOpen.isActive = false
             menuContainerClosed.isActive = true
             menuContainerClosed.priority = UILayoutPriority(999)
             [
-                fontName, fontSize, fontWeight
+                fontName, fontSize, fontParameters
             ].forEach({
                 $0.removeFromSuperview()
             })

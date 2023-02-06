@@ -65,6 +65,12 @@ final class NoteDetailViewViewModel {
         completion(.success([AttributedString(title), AttributedString(body)]))
     }
     
+    // MARK: - Open menu controller
+    /// - Parameters:
+    ///   - sourceController: controller with menu
+    ///   - delegate: popover delegate
+    ///   - viewController: the right menu controller
+    ///   - sender: he right menu button
     public func openMenuController(_ sourceController: UIViewController, _ delegate: UIPopoverPresentationControllerDelegate, viewController: UIViewController, sender: UIButton) {
         let viewController = viewController
         viewController.modalPresentationStyle = .popover
@@ -75,6 +81,9 @@ final class NoteDetailViewViewModel {
         } else if let vc = viewController as? ChangeSizeViewController {
             vc.delegate = (sourceController as! any ChangeSizeViewControllerDelegate)
             vc.preferredContentSize = CGSize(width: 80, height: 200)
+        } else if let vc = viewController as? ChangeParametersViewController {
+            vc.delegate = (sourceController as! any ChangeParametersViewControllerDelegate)
+            vc.preferredContentSize = CGSize(width: 50, height: 200)
         }
         
         if let popoverPresentationController = viewController.popoverPresentationController {
@@ -86,6 +95,10 @@ final class NoteDetailViewViewModel {
             sourceController.present(viewController, animated: true, completion: nil)
     }
     
+    // MARK: - Change font
+    /// - Parameters:
+    ///   - textView: NoteDetailView textView
+    ///   - font: font name
     public func changeFont(textView: UITextView, font: String) {
         let range = textView.selectedRange
          let string = NSMutableAttributedString(attributedString:
@@ -96,6 +109,11 @@ final class NoteDetailViewViewModel {
         textView.selectedRange = range
     }
     
+    
+    // MARK: - Change size
+    /// - Parameters:
+    ///   - textView: NoteDetailView textView
+    ///   - size: font size
     public func changeSize(textView: UITextView, size: CGFloat) {
         let range = textView.selectedRange
          let string = NSMutableAttributedString(attributedString:
@@ -113,6 +131,10 @@ final class NoteDetailViewViewModel {
         
     }
     
+    // MARK: - Change weight
+    /// - Parameters:
+    ///   - textView: NoteDetailView textView
+    ///   - weight: font weight
     public func changeWeight(textView: UITextView, weight: UIFont.nameOfBoldFont) {
         let range = textView.selectedRange
         let string = NSMutableAttributedString(attributedString:
@@ -123,20 +145,55 @@ final class NoteDetailViewViewModel {
             if let font = font as? UIFont {
                 if font.fontDescriptor.symbolicTraits.contains(.traitBold) {
                     let components = font.fontName.split(separator: "-")
+                    print("Components: - \(components)")
                     let regularFont = String(components[0])
                     let attributes = [NSAttributedString.Key.font: UIFont(name: regularFont, size: font.pointSize)!]
                     string.addAttributes(attributes, range: textView.selectedRange)
                     textView.attributedText = string
                     textView.selectedRange = range
-                    print("Font from textView: - \(fontName) = bold")
+                    print("Font from textView: - \(regularFont) = bold")
                 } else {
-                    fontName = font.fontName
-                    let attributes = [NSAttributedString.Key.font: UIFont(name: fontName + weight.font, size: font.pointSize)!]
-                    string.addAttributes(attributes, range: textView.selectedRange)
-                    textView.attributedText = string
-                    textView.selectedRange = range
+                    let components = font.fontName.split(separator: "M")
+                    if components.count == 1 {
+                        fontName = font.fontName
+                        let attributes = [NSAttributedString.Key.font: UIFont(name: fontName + weight.font, size: font.pointSize)!]
+                        string.addAttributes(attributes, range: textView.selectedRange)
+                        textView.attributedText = string
+                        textView.selectedRange = range
+                        print("Font from textView: - \(fontName)")
+                    } else {
+                        print("Bad font")
+                        let goodFont = String(components[0])
+                        let attributes = [NSAttributedString.Key.font: UIFont(name: goodFont + weight.font + "MT", size: font.pointSize)!]
+                        string.addAttributes(attributes, range: textView.selectedRange)
+                        textView.attributedText = string
+                        textView.selectedRange = range
+                        print("Font from textView: - \(goodFont + weight.font + "MT")")
+                    }
                 }
-                print("Font from textView: - \(fontName)")
+            }
+        }
+    }
+    
+    // MARK: - Change style
+    /// - Parameters:
+    ///   - textView: NoteDetailView textView
+    ///   - style: choose between .strikethroughStyle, .underlineStyle
+    public func changeStyle(textView: UITextView, style: NSAttributedString.Key) {
+        let range = textView.selectedRange
+        let string = NSMutableAttributedString(attributedString: textView.attributedText)
+        string.enumerateAttribute(style, in: range) { currentStyle, _, _ in
+            if currentStyle != nil {
+                print("Strike line = \(currentStyle.debugDescription)")
+                string.removeAttribute(style, range: range)
+                textView.attributedText = string
+                textView.selectedRange = range
+            } else {
+                print("No Strike line = \(currentStyle.debugDescription)")
+                let attributes = [style: NSUnderlineStyle.single.rawValue]
+                string.addAttributes(attributes, range: range)
+                textView.attributedText = string
+                textView.selectedRange = range
             }
         }
     }

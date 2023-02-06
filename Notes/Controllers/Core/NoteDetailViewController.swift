@@ -63,8 +63,7 @@ class NoteDetailViewController: UIViewController{
     
     // MARK: - delete
     @objc private func splitText() {
-        viewModel.changeWeight(textView: noteDetailView.textView, weight: .bold)
-        
+        viewModel.changeStyle(textView: noteDetailView.textView, style: .strikethroughStyle)
     }
     
     @objc private func isEditingTap() {
@@ -129,6 +128,11 @@ class NoteDetailViewController: UIViewController{
 
 // MARK: - NoteDetailViewDelegate
 extension NoteDetailViewController: NoteDetailViewDelegate {
+    func presentParametersMenu(sender: UIButton) {
+        viewModel.openMenuController(self, self, viewController: ChangeParametersViewController(viewModel: ChangeParametersViewViewModel()), sender: sender)
+        print("Parameters menu open")
+    }
+    
     func presentSizeMenu(sender: UIButton) {
         viewModel.openMenuController(self, self, viewController: ChangeSizeViewController(viewModel: ChangeSizeViewViewModel()), sender: sender)
         print("Size menu open")
@@ -152,7 +156,23 @@ extension NoteDetailViewController: UIPopoverPresentationControllerDelegate {
 }
 
 // MARK: - Delegates for change: Font, Size
-extension NoteDetailViewController: ChangeFontViewControllerDelegate, ChangeSizeViewControllerDelegate {
+extension NoteDetailViewController: ChangeFontViewControllerDelegate, ChangeSizeViewControllerDelegate, ChangeParametersViewControllerDelegate {
+    func didChangeStyle(_ style: NSAttributedString.Key) {
+        if style == .strikethroughStyle {
+            print("In NoteDetailViewController strike button tap: - true")
+            viewModel.changeStyle(textView: noteDetailView.textView, style: .strikethroughStyle)
+        } else if style == .underlineStyle {
+            print("In NoteDetailViewController underLine button tap: - true")
+            viewModel.changeStyle(textView: noteDetailView.textView, style: .underlineStyle)
+        }
+    }
+    
+    
+    
+    func didChangeWeight() {
+        print("In NoteDetailViewController weight button tap: - true")
+        viewModel.changeWeight(textView: noteDetailView.textView, weight: .bold)
+    }
     
     func didChangeFont(font: String) {
         print("In NoteDetailViewController font: - \(font)")

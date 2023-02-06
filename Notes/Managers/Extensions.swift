@@ -59,10 +59,13 @@ extension UIFont {
     
     public enum nameOfBoldFont: String, CaseIterable {
         case bold = "Bold"
+        case italic = "Italic"
         
         var font: String {
             switch self {
             case .bold:
+                return "-" + rawValue
+            case .italic:
                 return "-" + rawValue
             }
         }

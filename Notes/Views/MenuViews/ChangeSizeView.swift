@@ -11,7 +11,7 @@ protocol ChangeSizeViewDelegate: AnyObject {
     func didChangeSize(size: CGFloat)
 }
 
-class ChangeSizeView: UIView {
+final class ChangeSizeView: UIView {
     
     private let viewModel: ChangeSizeViewViewModel
     
@@ -44,8 +44,6 @@ class ChangeSizeView: UIView {
         fontSizeSlider.transform = CGAffineTransform(rotationAngle: CGFloat(-Double.pi/2))
         fontSizeSlider.setValue(16, animated: true)
         fontSizeSlider.addTarget(self, action: #selector(changeSize), for: .valueChanged)
-//        fontPicker.delegate = viewModel
-//        fontPicker.dataSource = viewModel
         //viewModel.delegate = self
     }
     
