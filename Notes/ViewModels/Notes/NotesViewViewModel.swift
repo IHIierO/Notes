@@ -19,9 +19,16 @@ final class NotesViewViewModel: NSObject {
     public var models: [NoteTextModel] = []
     
     override init(){
+        let titleString = "Readme"
+        let bodyString = "\nОсновные возможности этого приложения:"
+        let title = NSMutableAttributedString(string: titleString)
+        let bold = UIFont.nameOfBoldFont.bold
+        let titleAttribute = [NSAttributedString.Key.font: UIFont(name: UIFont.nameOfFont.helveticaNeue.rawValue + bold.font, size: 20)!]
+        title.addAttributes(titleAttribute, range: NSMakeRange(0, titleString.count))
+        let body = NSMutableAttributedString(string: bodyString)
+        body.addAttribute(NSAttributedString.Key.font, value: UIFont(name: UIFont.nameOfFont.helveticaNeue.rawValue, size: 16)!, range: NSMakeRange(0, bodyString.count))
         models = [
-            .init(id: "2023-02-03 13:39:57 +0000", titleText: "New Note with long long long long long name", bodyText: "Simple text body for note", noteDate: CustomDate.dateFromCustomString(string: "01.02.2023")),
-            .init(id: "2023-02-03 13:49:57 +0000", titleText: "Enother Note", bodyText: "Enother text body for note", noteDate: CustomDate.dateFromCustomString(string: "02.02.2023")),
+            .init(id: "2023-02-03 13:39:57 +0000", titleText: AttributedString(title), bodyText: AttributedString(body), noteDate: CustomDate.dateFromCustomString(string: "01.02.2023"))
         ]
     }
     

@@ -22,7 +22,8 @@ final class NoteDetailView: UIView {
     public let textView: UITextView = {
        let textView = UITextView()
         textView.isEditable = false
-        let attributesBold = [NSAttributedString.Key.font : UIFont(name: UIFont.nameOfBoldFont.helveticaNeueBold.rawValue, size: 20)!]
+        let bold = UIFont.nameOfBoldFont.bold
+        let attributesBold = [NSAttributedString.Key.font: UIFont(name: UIFont.nameOfFont.helveticaNeue.rawValue + bold.font, size: 20)!]
         textView.attributedText = NSAttributedString(string: "")
         textView.typingAttributes = attributesBold
         textView.translatesAutoresizingMaskIntoConstraints = false

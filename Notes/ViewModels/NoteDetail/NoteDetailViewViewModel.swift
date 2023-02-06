@@ -69,9 +69,12 @@ final class NoteDetailViewViewModel {
         let viewController = viewController
         viewController.modalPresentationStyle = .popover
         viewController.navigationItem.largeTitleDisplayMode = .never
-        viewController.preferredContentSize = CGSize(width: 150, height: 200)
         if let vc = viewController as? ChangeFontViewController {
             vc.delegate = (sourceController as! any ChangeFontViewControllerDelegate)
+            vc.preferredContentSize = CGSize(width: 150, height: 200)
+        } else if let vc = viewController as? ChangeSizeViewController {
+            vc.delegate = (sourceController as! any ChangeSizeViewControllerDelegate)
+            vc.preferredContentSize = CGSize(width: 80, height: 200)
         }
         
         if let popoverPresentationController = viewController.popoverPresentationController {
@@ -91,5 +94,50 @@ final class NoteDetailViewViewModel {
         string.addAttributes(attributes, range: textView.selectedRange)
         textView.attributedText = string
         textView.selectedRange = range
+    }
+    
+    public func changeSize(textView: UITextView, size: CGFloat) {
+        let range = textView.selectedRange
+         let string = NSMutableAttributedString(attributedString:
+                                                    textView.attributedText)
+        var fontName = ""
+        string.enumerateAttribute(.font, in: range) { font, _, _ in
+            if let font = font as? UIFont {
+                fontName = font.fontName
+            }
+        }
+        let attributes = [NSAttributedString.Key.font: UIFont(name: fontName, size: size)!]
+        string.addAttributes(attributes, range: textView.selectedRange)
+        textView.attributedText = string
+        textView.selectedRange = range
+        
+    }
+    
+    public func changeWeight(textView: UITextView, weight: UIFont.nameOfBoldFont) {
+        let range = textView.selectedRange
+        let string = NSMutableAttributedString(attributedString:
+                                                textView.attributedText)
+        
+        var fontName = ""
+        string.enumerateAttribute(.font, in: range) { font, _, _ in
+            if let font = font as? UIFont {
+                if font.fontDescriptor.symbolicTraits.contains(.traitBold) {
+                    let components = font.fontName.split(separator: "-")
+                    let regularFont = String(components[0])
+                    let attributes = [NSAttributedString.Key.font: UIFont(name: regularFont, size: font.pointSize)!]
+                    string.addAttributes(attributes, range: textView.selectedRange)
+                    textView.attributedText = string
+                    textView.selectedRange = range
+                    print("Font from textView: - \(fontName) = bold")
+                } else {
+                    fontName = font.fontName
+                    let attributes = [NSAttributedString.Key.font: UIFont(name: fontName + weight.font, size: font.pointSize)!]
+                    string.addAttributes(attributes, range: textView.selectedRange)
+                    textView.attributedText = string
+                    textView.selectedRange = range
+                }
+                print("Font from textView: - \(fontName)")
+            }
+        }
     }
 }

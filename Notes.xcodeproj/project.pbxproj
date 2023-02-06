@@ -29,6 +29,8 @@
 		395BE40A298FBB7A00DCD96C /* ChangeSizeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 395BE409298FBB7A00DCD96C /* ChangeSizeViewController.swift */; };
 		395BE40D298FBC6600DCD96C /* ChangeFontView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 395BE40C298FBC6600DCD96C /* ChangeFontView.swift */; };
 		395BE410298FBD1D00DCD96C /* ChangeFontViewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 395BE40F298FBD1D00DCD96C /* ChangeFontViewViewModel.swift */; };
+		395BE4122990FF7600DCD96C /* ChangeSizeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 395BE4112990FF7600DCD96C /* ChangeSizeView.swift */; };
+		395BE4142991023400DCD96C /* ChangeSizeViewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 395BE4132991023400DCD96C /* ChangeSizeViewViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -56,6 +58,8 @@
 		395BE409298FBB7A00DCD96C /* ChangeSizeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeSizeViewController.swift; sourceTree = "<group>"; };
 		395BE40C298FBC6600DCD96C /* ChangeFontView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeFontView.swift; sourceTree = "<group>"; };
 		395BE40F298FBD1D00DCD96C /* ChangeFontViewViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeFontViewViewModel.swift; sourceTree = "<group>"; };
+		395BE4112990FF7600DCD96C /* ChangeSizeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeSizeView.swift; sourceTree = "<group>"; };
+		395BE4132991023400DCD96C /* ChangeSizeViewViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeSizeViewViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -215,6 +219,7 @@
 			isa = PBXGroup;
 			children = (
 				395BE40C298FBC6600DCD96C /* ChangeFontView.swift */,
+				395BE4112990FF7600DCD96C /* ChangeSizeView.swift */,
 			);
 			path = MenuViews;
 			sourceTree = "<group>";
@@ -223,6 +228,7 @@
 			isa = PBXGroup;
 			children = (
 				395BE40F298FBD1D00DCD96C /* ChangeFontViewViewModel.swift */,
+				395BE4132991023400DCD96C /* ChangeSizeViewViewModel.swift */,
 			);
 			path = Menu;
 			sourceTree = "<group>";
@@ -297,6 +303,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				395BE4122990FF7600DCD96C /* ChangeSizeView.swift in Sources */,
 				395BE3EE298BC27300DCD96C /* NotesView.swift in Sources */,
 				395BE3D1298BBA0400DCD96C /* NotesViewController.swift in Sources */,
 				395BE408298FB59E00DCD96C /* ChangeFontViewController.swift in Sources */,
@@ -316,6 +323,7 @@
 				395BE3F3298BD35300DCD96C /* NotesCollectionViewCell.swift in Sources */,
 				395BE400298C099600DCD96C /* NoteTextModel.swift in Sources */,
 				395BE3D7298BBA0400DCD96C /* Notes.xcdatamodeld in Sources */,
+				395BE4142991023400DCD96C /* ChangeSizeViewViewModel.swift in Sources */,
 				395BE40D298FBC6600DCD96C /* ChangeFontView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

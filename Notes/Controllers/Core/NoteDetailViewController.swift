@@ -63,16 +63,7 @@ class NoteDetailViewController: UIViewController{
     
     // MARK: - delete
     @objc private func splitText() {
-//        viewModel.saveNoteAttributedText(noteDetailView) { [weak self] result in
-//            switch result {
-//            case .success(let text):
-//                let newNote = NoteTextModel(id: "\(Date())", titleText: "", bodyText: text, noteDate: Date())
-//                UserDefaultsManager.shared.saveData(newNote)
-//                self?.isNewNote = false
-//            case .failure:
-//                break
-//            }
-//        }
+        viewModel.changeWeight(textView: noteDetailView.textView, weight: .bold)
         
     }
     
@@ -139,8 +130,8 @@ class NoteDetailViewController: UIViewController{
 // MARK: - NoteDetailViewDelegate
 extension NoteDetailViewController: NoteDetailViewDelegate {
     func presentSizeMenu(sender: UIButton) {
-//        viewModel.openMenuController(self, self, viewController: ChangeSizeViewController(), sender: sender)
-//        print("Size menu open")
+        viewModel.openMenuController(self, self, viewController: ChangeSizeViewController(viewModel: ChangeSizeViewViewModel()), sender: sender)
+        print("Size menu open")
     }
     
     func presentFontMenu(sender: UIButton) {
@@ -160,10 +151,16 @@ extension NoteDetailViewController: UIPopoverPresentationControllerDelegate {
     }
 }
 
-extension NoteDetailViewController: ChangeFontViewControllerDelegate {
+// MARK: - Delegates for change: Font, Size
+extension NoteDetailViewController: ChangeFontViewControllerDelegate, ChangeSizeViewControllerDelegate {
+    
     func didChangeFont(font: String) {
         print("In NoteDetailViewController font: - \(font)")
         viewModel.changeFont(textView: noteDetailView.textView, font: font)
     }
     
+    func didChangeSize(size: CGFloat) {
+        print("In NoteDetailViewController size: - \(size)")
+        viewModel.changeSize(textView: noteDetailView.textView, size: size)
+    }
 }
