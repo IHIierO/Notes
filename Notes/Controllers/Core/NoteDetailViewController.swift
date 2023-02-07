@@ -103,20 +103,7 @@ class NoteDetailViewController: UIViewController{
 // MARK: - NoteDetailViewDelegate
 extension NoteDetailViewController: NoteDetailViewDelegate, NoteDetailViewViewModelDelegate {
     func didFinishPicking(_ image: UIImage) {
-        #warning("sent fun to view model")
-        //create and NSTextAttachment and add your image to it.
-        let attachment = NSTextAttachment()
-        attachment.image = image
-        //calculate new size.  (-20 because I want to have a litle space on the right of picture)
-        let newImageWidth = (noteDetailView.textView.bounds.size.width - 20 )
-        let scale = newImageWidth/image.size.width
-        let newImageHeight = image.size.height * scale
-        //resize this
-        attachment.bounds = CGRect.init(x: 0, y: 0, width: newImageWidth, height: newImageHeight)
-        //put your NSTextAttachment into and attributedString
-        let attString = NSAttributedString(attachment: attachment)
-        //add this attributed string to the current position.
-        noteDetailView.textView.textStorage.insert(attString, at: noteDetailView.textView.selectedRange.location)
+        viewModel.didFinishPicking(image, textView: noteDetailView.textView)
     }
     
     func presentPhotoActionSheet() {

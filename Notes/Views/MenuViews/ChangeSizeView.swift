@@ -49,9 +49,7 @@ final class ChangeSizeView: UIView {
     }
     
     @objc private func changeSize(_ sender: UISlider) {
-        let step: Float = 2
-        let roundedValue = round(sender.value/step) * step
-        sender.setValue(roundedValue, animated: false)
+        viewModel.changeSize(sender)
         delegate?.didChangeSize(size: CGFloat(sender.value))
     }
     

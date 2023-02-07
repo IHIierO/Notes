@@ -106,11 +106,13 @@ final class NoteDetailViewViewModel: NSObject {
         let range = textView.selectedRange
          let string = NSMutableAttributedString(attributedString:
                                                     textView.attributedText)
-        let attributes = [NSAttributedString.Key.font: UIFont(name: UIFont.nameOfFont(rawValue: font)!.regularFont, size: 16)!]
+        guard let newFont = UIFont.nameOfFont(rawValue: font) else {
+            return
+        }
+        let attributes = [NSAttributedString.Key.font: UIFont(name: newFont.regularFont, size: 16)!]
         string.addAttributes(attributes, range: textView.selectedRange)
         textView.attributedText = string
         textView.selectedRange = range
-        #warning("Change all !")
     }
     
     // MARK: - Change size
@@ -146,11 +148,11 @@ final class NoteDetailViewViewModel: NSObject {
             if let font = font as? UIFont {
                 if font.fontDescriptor.symbolicTraits.contains(trait) {
                     let components = font.fontName.split(separator: "-")
-                    var regularFont = String(components[0])
-                    if regularFont == "Avenir" {
-                        regularFont = regularFont + "-" + "Book"
+                    let regularFont = String(components[0])
+                    guard let newFont = UIFont.nameOfFont(rawValue: regularFont) else {
+                        return
                     }
-                    let attributes = [NSAttributedString.Key.font: UIFont(name: UIFont.nameOfFont(rawValue: regularFont)!.regularFont, size: font.pointSize)!]
+                    let attributes = [NSAttributedString.Key.font: UIFont(name: newFont.regularFont, size: font.pointSize)!]
                     string.addAttributes(attributes, range: textView.selectedRange)
                     textView.attributedText = string
                     textView.selectedRange = range
@@ -159,11 +161,17 @@ final class NoteDetailViewViewModel: NSObject {
                     if trait == .traitBold {
                         let components = font.fontName.split(separator: "M")
                         let regularFont = String(components[0]).split(separator: "-")
-                        traitFont = UIFont(name: UIFont.nameOfFont(rawValue: String(regularFont[0]))!.boldFont, size: font.pointSize)!
+                        guard let newFont = UIFont.nameOfFont(rawValue: String(regularFont[0])) else {
+                            return
+                        }
+                        traitFont = UIFont(name: newFont.boldFont, size: font.pointSize)!
                     } else if trait == .traitItalic {
                         let components = font.fontName.split(separator: "M")
                         let regularFont = String(components[0]).split(separator: "-")
-                        traitFont = UIFont(name: UIFont.nameOfFont(rawValue: String(regularFont[0]))!.italicFont, size: font.pointSize)!
+                        guard let newFont = UIFont.nameOfFont(rawValue: String(regularFont[0])) else {
+                            return
+                        }
+                        traitFont = UIFont(name: newFont.italicFont, size: font.pointSize)!
                     }
                     let attributes = [NSAttributedString.Key.font: traitFont]
                     string.addAttributes(attributes, range: textView.selectedRange)
@@ -198,6 +206,17 @@ final class NoteDetailViewViewModel: NSObject {
 
 // MARK: - add Image to TextView
 extension NoteDetailViewViewModel: UIImagePickerControllerDelegate, PHPickerViewControllerDelegate, UINavigationControllerDelegate {
+    
+    public func didFinishPicking(_ image: UIImage, textView: UITextView) {
+        let attachment = NSTextAttachment()
+        attachment.image = image
+        let newImageWidth = (textView.bounds.size.width - 20 )
+        let scale = newImageWidth/image.size.width
+        let newImageHeight = image.size.height * scale
+        attachment.bounds = CGRect.init(x: 0, y: 0, width: newImageWidth, height: newImageHeight)
+        let attString = NSAttributedString(attachment: attachment)
+        textView.textStorage.insert(attString, at: textView.selectedRange.location)
+    }
     
     public func presentPhotoActionSheet(_ rootViewController: UIViewController){
         let actionSheet = UIAlertController(title: "Add Image", message: "Choose a method", preferredStyle: .actionSheet)

@@ -20,16 +20,9 @@ final class NotesViewViewModel: NSObject {
     
     // MARK: - Init
     override init(){
-        #warning("Create readme")
-        let titleString = "Readme"
-        let bodyString = "\nОсновные возможности этого приложения:"
-        let title = NSMutableAttributedString(string: titleString)
-        let titleAttribute = [NSAttributedString.Key.font: UIFont(name: UIFont.nameOfFont.helveticaNeue.boldFont, size: 20)!]
-        title.addAttributes(titleAttribute, range: NSMakeRange(0, titleString.count))
-        let body = NSMutableAttributedString(string: bodyString)
-        body.addAttribute(NSAttributedString.Key.font, value: UIFont(name: UIFont.nameOfFont.helveticaNeue.regularFont, size: 16)!, range: NSMakeRange(0, bodyString.count))
+        let readmeNote = ReadmeNote()
         models = [
-            .init(id: "2023-02-03 13:39:57 +0000", titleText: AttributedString(title), bodyText: AttributedString(body), noteDate: CustomDate.dateFromCustomString(string: "01.02.2023"))
+            .init(id: "2023-02-03 13:39:57 +0000", titleText: AttributedString(readmeNote.createTitle()), bodyText: AttributedString(readmeNote.createBody()), noteDate: CustomDate.dateFromCustomString(string: "01.02.2023"))
         ]
     }
     

@@ -36,7 +36,7 @@ extension UIFont {
     
     public enum nameOfFont: String, CaseIterable {
         case arial = "Arial"
-        case avenir = "Avenir-Book"
+        case avenir = "Avenir"
         case baskerville = "Baskerville"
         case didot = "Didot"
         case georgia = "Georgia"
@@ -46,10 +46,8 @@ extension UIFont {
         
         var font: String {
             switch self {
-            case .arial, .baskerville, .didot, .georgia, .helveticaNeue:
+            case .arial, .avenir, .baskerville, .didot, .georgia, .helveticaNeue:
                 return rawValue
-            case .avenir:
-                return "Avenir"
             case .timesNewRoman:
                 return "TimesNewRoman"
             }
@@ -57,10 +55,12 @@ extension UIFont {
         
         var regularFont: String {
             switch self {
-            case .avenir, .baskerville, .didot, .georgia, .helveticaNeue:
+            case .baskerville, .didot, .georgia, .helveticaNeue:
                 return rawValue
             case .arial:
                 return rawValue + "MT"
+            case .avenir:
+                return "Avenir-Book"
             case .timesNewRoman:
                 return rawValue + "MT"
             }

@@ -28,42 +28,17 @@ final class ChangeParametersView: UIView {
         return container
     }()
     
-    private let textObliqueness: UIButton = {
-       let button = UIButton(frame: CGRect(x: 0, y: 0, width: 50, height: 50))
-        button.configuration = .filled()
-        var title = AttributedString.init(" I ")
-        title.obliqueness = 0.3
-        title.font = UIFont(name: UIFont.nameOfFont.timesNewRoman.regularFont, size: 20)
-        button.setAttributedTitle(NSAttributedString(title), for: .normal)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        return button
+    private lazy var textObliqueness: UIButton = {
+        viewModel.createTextObliquenessButton()
     }()
-    private let textUnderline: UIButton = {
-       let button = UIButton(frame: CGRect(x: 0, y: 0, width: 50, height: 50))
-        button.configuration = .filled()
-        var title = AttributedString.init("A")
-        title.underlineStyle = .single
-        button.configuration?.attributedTitle = title
-        button.translatesAutoresizingMaskIntoConstraints = false
-        return button
+    private lazy var textUnderline: UIButton = {
+        viewModel.createTextUnderlineButton()
     }()
-    private let textWeight: UIButton = {
-       let button = UIButton(frame: CGRect(x: 0, y: 0, width: 50, height: 50))
-        button.configuration = .filled()
-        var title = AttributedString.init("B")
-        title.font = UIFont.boldSystemFont(ofSize: 20)
-        button.configuration?.attributedTitle = title
-        button.translatesAutoresizingMaskIntoConstraints = false
-        return button
+    private lazy var textWeight: UIButton = {
+        viewModel.createTextWeightButton()
     }()
-    private let textStrike: UIButton = {
-       let button = UIButton(frame: CGRect(x: 0, y: 0, width: 50, height: 50))
-        button.configuration = .filled()
-        var title = AttributedString.init("A")
-        title.strikethroughStyle = .single
-        button.configuration?.attributedTitle = title
-        button.translatesAutoresizingMaskIntoConstraints = false
-        return button
+    private lazy var textStrike: UIButton = {
+        viewModel.createTextStrikeButton()
     }()
     
     var buttonTap = false
