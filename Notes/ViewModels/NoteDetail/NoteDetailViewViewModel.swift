@@ -14,10 +14,11 @@ protocol NoteDetailViewViewModelDelegate: AnyObject {
 }
 
 final class NoteDetailViewViewModel: NSObject {
-    private var model: NoteTextModel
     
+    private var model: NoteTextModel
     public weak var delegate: NoteDetailViewViewModelDelegate?
     
+    // MARK: - Init
     init(model: NoteTextModel) {
         self.model = model
     }
@@ -34,7 +35,6 @@ final class NoteDetailViewViewModel: NSObject {
         let mutableAttributedString = NSMutableAttributedString()
         let titleText = model.titleText!
         let bodyText = model.bodyText!
-        //bodyText.attachment?.adjustsImageSizeForAccessibilityContentSizeCategory = true
         let title = NSMutableAttributedString(titleText)
         let body = NSMutableAttributedString(bodyText)
         mutableAttributedString.append(title)
@@ -43,17 +43,10 @@ final class NoteDetailViewViewModel: NSObject {
         return mutableAttributedString
     }
     
-    // MARK: - delete
-//    public func saveNoteText(_ noteDetailView: NoteDetailView, completion: @escaping (Result<[String],Error>) -> Void) {
-//        guard let text = noteDetailView.textView.text else {
-//            return
-//        }
-//        let components = text.split(maxSplits: 1) { $0.isNewline }
-//        let title = components[0]
-//        let body = components[1]
-//        completion(.success([String(describing: title), String(describing: body)]))
-//    }
-    
+    // MARK: - Save Note AttributedText
+    /// - Parameters:
+    ///   - noteDetailView: NoteDetailView TextView
+    ///   - completion: Create Title and Body
     public func saveNoteAttributedText(_ noteDetailView: NoteDetailView, completion: @escaping (Result<[AttributedString],Error>) -> Void) {
         guard let text = noteDetailView.textView.attributedText else {
             completion(.failure(URLError(.badServerResponse)))
@@ -120,15 +113,13 @@ final class NoteDetailViewViewModel: NSObject {
         #warning("Change all !")
     }
     
-    
     // MARK: - Change size
     /// - Parameters:
     ///   - textView: NoteDetailView textView
     ///   - size: font size
     public func changeSize(textView: UITextView, size: CGFloat) {
         let range = textView.selectedRange
-        let string = NSMutableAttributedString(attributedString:
-                                                    textView.attributedText)
+        let string = NSMutableAttributedString(attributedString: textView.attributedText)
         var fontName = ""
         string.enumerateAttribute(.font, in: range) { font, _, _ in
             if let font = font as? UIFont {
@@ -149,19 +140,16 @@ final class NoteDetailViewViewModel: NSObject {
     ///   - trait: choose between .traitBold, .traitItalic
     public func changeTrait(textView: UITextView, trait: UIFontDescriptor.SymbolicTraits) {
         let range = textView.selectedRange
-        let string = NSMutableAttributedString(attributedString:
-                                                textView.attributedText)
+        let string = NSMutableAttributedString(attributedString: textView.attributedText)
         
         string.enumerateAttribute(.font, in: range) { font, _, _ in
             if let font = font as? UIFont {
                 if font.fontDescriptor.symbolicTraits.contains(trait) {
                     let components = font.fontName.split(separator: "-")
-                    print("Regular Components: - \(components)")
                     var regularFont = String(components[0])
                     if regularFont == "Avenir" {
                         regularFont = regularFont + "-" + "Book"
                     }
-                    print("Regular Font from textView: - \(regularFont)")
                     let attributes = [NSAttributedString.Key.font: UIFont(name: UIFont.nameOfFont(rawValue: regularFont)!.regularFont, size: font.pointSize)!]
                     string.addAttributes(attributes, range: textView.selectedRange)
                     textView.attributedText = string
@@ -171,15 +159,12 @@ final class NoteDetailViewViewModel: NSObject {
                     if trait == .traitBold {
                         let components = font.fontName.split(separator: "M")
                         let regularFont = String(components[0]).split(separator: "-")
-                        print("Bold Components: - \(components)")
                         traitFont = UIFont(name: UIFont.nameOfFont(rawValue: String(regularFont[0]))!.boldFont, size: font.pointSize)!
                     } else if trait == .traitItalic {
                         let components = font.fontName.split(separator: "M")
                         let regularFont = String(components[0]).split(separator: "-")
-                        print("Italic Components: - \(components)")
                         traitFont = UIFont(name: UIFont.nameOfFont(rawValue: String(regularFont[0]))!.italicFont, size: font.pointSize)!
                     }
-                    print("Regular Font from textView: - \(traitFont.fontName) = bold")
                     let attributes = [NSAttributedString.Key.font: traitFont]
                     string.addAttributes(attributes, range: textView.selectedRange)
                     textView.attributedText = string
@@ -198,12 +183,10 @@ final class NoteDetailViewViewModel: NSObject {
         let string = NSMutableAttributedString(attributedString: textView.attributedText)
         string.enumerateAttribute(style, in: range) { currentStyle, _, _ in
             if currentStyle != nil {
-                print("Strike line = \(currentStyle.debugDescription)")
                 string.removeAttribute(style, range: range)
                 textView.attributedText = string
                 textView.selectedRange = range
             } else {
-                print("No Strike line = \(currentStyle.debugDescription)")
                 let attributes = [style: NSUnderlineStyle.single.rawValue]
                 string.addAttributes(attributes, range: range)
                 textView.attributedText = string
@@ -213,15 +196,16 @@ final class NoteDetailViewViewModel: NSObject {
     }
 }
 
+// MARK: - add Image to TextView
 extension NoteDetailViewViewModel: UIImagePickerControllerDelegate, PHPickerViewControllerDelegate, UINavigationControllerDelegate {
     
     public func presentPhotoActionSheet(_ rootViewController: UIViewController){
-        let actionSheet = UIAlertController(title: "Фото профиля", message: "Выберете способ", preferredStyle: .actionSheet)
-        actionSheet.addAction(UIAlertAction(title: "Отмена", style: .cancel))
-        actionSheet.addAction(UIAlertAction(title: "Камера", style: .default, handler: { [weak self] _ in
+        let actionSheet = UIAlertController(title: "Add Image", message: "Choose a method", preferredStyle: .actionSheet)
+        actionSheet.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+        actionSheet.addAction(UIAlertAction(title: "Camera", style: .default, handler: { [weak self] _ in
             self?.presentCamera(rootViewController)
         }))
-        actionSheet.addAction(UIAlertAction(title: "Библиотека", style: .default, handler: { [weak self] _ in
+        actionSheet.addAction(UIAlertAction(title: "Library", style: .default, handler: { [weak self] _ in
             self?.presentPhotoPicker(rootViewController)
         }))
         rootViewController.present(actionSheet, animated: true)
@@ -242,13 +226,14 @@ extension NoteDetailViewViewModel: UIImagePickerControllerDelegate, PHPickerView
         let vc = PHPickerViewController(configuration: config)
         vc.delegate = self
         rootViewController.present(vc, animated: true)
-        
     }
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         picker.dismiss(animated: true)
         guard let image = info[UIImagePickerController.InfoKey.editedImage] as? UIImage else {return}
-        //profileImage.image = image
+        DispatchQueue.main.async { [weak self] in
+            self?.delegate?.didFinishPicking(image)
+        }
     }
     
     func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
@@ -259,7 +244,6 @@ extension NoteDetailViewViewModel: UIImagePickerControllerDelegate, PHPickerView
                 guard let image = reading as? UIImage, error == nil else {return}
                 DispatchQueue.main.async {
                     self?.delegate?.didFinishPicking(image)
-                    //self?.profileImage.image = image
                 }
             }
         }

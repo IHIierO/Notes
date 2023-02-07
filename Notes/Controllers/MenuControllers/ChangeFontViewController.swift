@@ -15,9 +15,9 @@ final class ChangeFontViewController: UIViewController {
     
     private let viewModel: ChangeFontViewViewModel
     private let changeFontView: ChangeFontView
-    
     public weak var delegate: ChangeFontViewControllerDelegate?
     
+    // MARK: - Init
     init(viewModel: ChangeFontViewViewModel) {
         self.viewModel = viewModel
         self.changeFontView = ChangeFontView(frame: .zero, viewModel: viewModel)
@@ -28,6 +28,7 @@ final class ChangeFontViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
+    // MARK: - LifeStyle
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
@@ -48,7 +49,6 @@ final class ChangeFontViewController: UIViewController {
 
 extension ChangeFontViewController: ChangeFontViewDelegate {
     func didChangeFont(font: String) {
-        print("In ChangeFontViewController font: - \(font)")
         delegate?.didChangeFont(font: font)
     }
 }

@@ -12,5 +12,5 @@ final class ChangeParametersViewViewModel {
     
     init() {}
     
-    
+#warning("Maybe send func from view")
 }

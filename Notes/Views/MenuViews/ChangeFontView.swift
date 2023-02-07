@@ -14,7 +14,6 @@ protocol ChangeFontViewDelegate: AnyObject {
 class ChangeFontView: UIView {
     
     private let viewModel: ChangeFontViewViewModel
-    
     public weak var delegate: ChangeFontViewDelegate?
     
     private let fontPicker: UIPickerView = {
@@ -23,6 +22,7 @@ class ChangeFontView: UIView {
         return picker
     }()
 
+    // MARK: - Init
     init(frame: CGRect, viewModel: ChangeFontViewViewModel) {
         self.viewModel = viewModel
         super.init(frame: frame)
@@ -56,9 +56,6 @@ class ChangeFontView: UIView {
 
 extension ChangeFontView: ChangeFontViewViewModelDelegate {
     func didChangeFont(font: String) {
-        print("In ChangeFontView font: - \(font)")
         delegate?.didChangeFont(font: font)
     }
-    
-    
 }

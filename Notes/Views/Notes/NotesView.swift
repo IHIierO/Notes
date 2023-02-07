@@ -17,31 +17,29 @@ protocol NotesViewDelegate: AnyObject {
 final class NotesView: UIView {
     
     public weak var delegate: NotesViewDelegate?
-    
     public let viewModel: NotesViewViewModel
-    
-    public var notesText: [String] = ["First",
-                                      "Second",
-                                      "Third"]
-    
     public var collectionView: UICollectionView?
    
     // MARK: - Init
     init(frame: CGRect, viewModel: NotesViewViewModel) {
         self.viewModel = viewModel
         super.init(frame: frame)
+        setupView()
+        setConstarints()
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    private func setupView() {
         translatesAutoresizingMaskIntoConstraints = false
         backgroundColor = .systemBackground
         let collectionView = createCollectionView()
         self.collectionView = collectionView
         addSubview(collectionView)
-        setConstarints()
         viewModel.delegate = self
         viewModel.fetchNotes()
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
     }
     
     private func createCollectionView() -> UICollectionView {
@@ -79,5 +77,4 @@ extension NotesView: NotesViewViewModelDelegate {
     func didSelectCharacter(_ model: NoteTextModel) {
         delegate?.notesView(self, didSelectModel: model)
     }
-    
 }

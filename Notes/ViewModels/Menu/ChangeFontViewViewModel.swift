@@ -17,6 +17,7 @@ final class ChangeFontViewViewModel: NSObject {
     
     public weak var delegate: ChangeFontViewViewModelDelegate?
     
+    // MARK: - Init
     override init() {
         fonts = UIFont.nameOfFont.allCases
     }
@@ -32,22 +33,20 @@ extension ChangeFontViewViewModel: UIPickerViewDelegate, UIPickerViewDataSource 
         return fonts.count
     }
     
-    
     func pickerView(_ pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusing view: UIView?) -> UIView {
         var pickerLabel: UILabel? = (view as? UILabel)
-            if pickerLabel == nil {
-                pickerLabel = UILabel()
-                pickerLabel?.font = UIFont(name: UIFont.nameOfFont.helveticaNeue.rawValue, size: 12)
-                pickerLabel?.textAlignment = .center
-            }
+        if pickerLabel == nil {
+            pickerLabel = UILabel()
+            pickerLabel?.font = UIFont(name: fonts[row].font, size: 12)
+            pickerLabel?.textAlignment = .center
+        }
         pickerLabel?.text = fonts[row].font
-
-            return pickerLabel!
+        
+        return pickerLabel!
     }
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         let font = fonts[row].rawValue
-        print("In viewModel font: - \(font)")
         delegate?.didChangeFont(font: font)
     }
 }

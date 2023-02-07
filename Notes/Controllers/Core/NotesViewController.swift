@@ -43,7 +43,8 @@ class NotesViewController: UIViewController, NotesViewDelegate {
         title = "Notes"
         view.addSubview(notesView)
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "square.and.pencil"), style: .plain, target: self, action: #selector(openNewNote))
-        navigationItem.leftBarButtonItem = UIBarButtonItem(title: "delete", style: .plain, target: self, action: #selector(deleteAllNotes))
+        /// It is possible to add a button to delete all notes.
+        //navigationItem.leftBarButtonItem = UIBarButtonItem(title: "delete", style: .plain, target: self, action: #selector(deleteAllNotes))
     }
     
     @objc private func deleteAllNotes() {
@@ -52,7 +53,7 @@ class NotesViewController: UIViewController, NotesViewDelegate {
 
     @objc private func openNewNote() {
         let viewModel = NoteDetailViewViewModel(model: NoteTextModel(id: "", titleText: nil, bodyText: nil, noteDate: Date()))
-        let detailVC =  NoteDetailViewController(viewModel: viewModel)
+        let detailVC = NoteDetailViewController(viewModel: viewModel)
         detailVC.textViewIsEditing = true
         detailVC.noteDetailView.textView.isEditable = true
         detailVC.isNewNote = true

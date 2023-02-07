@@ -8,7 +8,6 @@
 import UIKit
 
 protocol NoteDetailViewDelegate: AnyObject {
-    func textViewIsEditable()
     func presentFontMenu(sender: UIButton)
     func presentSizeMenu(sender: UIButton)
     func presentParametersMenu(sender: UIButton)
@@ -18,14 +17,12 @@ protocol NoteDetailViewDelegate: AnyObject {
 final class NoteDetailView: UIView {
     
     public weak var delegate: NoteDetailViewDelegate?
-    
     private let viewModel: NoteDetailViewViewModel
     
     public let textView: UITextView = {
        let textView = UITextView()
         textView.isEditable = false
-        let bold = UIFont.nameOfBoldFont.bold
-        let attributesBold = [NSAttributedString.Key.font: UIFont(name: UIFont.nameOfFont.helveticaNeue.rawValue + bold.font, size: 20)!]
+        let attributesBold = [NSAttributedString.Key.font: UIFont(name: UIFont.nameOfFont.helveticaNeue.boldFont, size: 20)!]
         textView.attributedText = NSAttributedString(string: "")
         textView.typingAttributes = attributesBold
         textView.translatesAutoresizingMaskIntoConstraints = false
@@ -60,8 +57,7 @@ final class NoteDetailView: UIView {
        let button = UIButton(frame: CGRect(x: 0, y: 0, width: 50, height: 50))
         button.configuration = .filled()
         var title = AttributedString.init("A")
-        //attText.obliqueness = 0.2 // To set the slant of the text
-        title.font = UIFont(name: UIFont.nameOfFont.didot.rawValue, size: 20)
+        title.font = UIFont(name: UIFont.nameOfFont.didot.regularFont, size: 20)
         button.configuration?.attributedTitle = title
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
@@ -191,8 +187,7 @@ final class NoteDetailView: UIView {
 extension NoteDetailView: UITextViewDelegate {
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
         if let character = text.last, character.isNewline {
-            print("New Line")
-            let attributesNormal = [NSAttributedString.Key.font : UIFont(name: UIFont.nameOfFont.helveticaNeue.rawValue, size: 16)!,
+            let attributesNormal = [NSAttributedString.Key.font : UIFont(name: UIFont.nameOfFont.helveticaNeue.regularFont, size: 16)!,
                                     NSAttributedString.Key.foregroundColor: UIColor.label]
             textView.typingAttributes = attributesNormal
         }

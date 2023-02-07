@@ -15,9 +15,9 @@ final class ChangeSizeViewController: UIViewController {
     
     private let viewModel: ChangeSizeViewViewModel
     private let changeSizeView: ChangeSizeView
-    
     public weak var delegate: ChangeSizeViewControllerDelegate?
     
+    // MARK: - Init
     init(viewModel: ChangeSizeViewViewModel) {
         self.viewModel = viewModel
         self.changeSizeView = ChangeSizeView(frame: .zero, viewModel: viewModel)
@@ -28,6 +28,7 @@ final class ChangeSizeViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
+    // MARK: - LifeStyle
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
@@ -48,7 +49,6 @@ final class ChangeSizeViewController: UIViewController {
 
 extension ChangeSizeViewController: ChangeSizeViewDelegate {
     func didChangeSize(size: CGFloat) {
-        //print("Size from slider: - \(size)")
         delegate?.didChangeSize(size: size)
     }
 }

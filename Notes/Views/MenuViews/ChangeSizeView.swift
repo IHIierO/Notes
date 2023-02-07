@@ -14,7 +14,6 @@ protocol ChangeSizeViewDelegate: AnyObject {
 final class ChangeSizeView: UIView {
     
     private let viewModel: ChangeSizeViewViewModel
-    
     public weak var delegate: ChangeSizeViewDelegate?
     
     private let fontSizeSlider: UISlider = {
@@ -28,8 +27,7 @@ final class ChangeSizeView: UIView {
         return slider
     }()
     
-    private let fontSizeSliderLabel = DefaultUILabel(inputText: "", fontSize: 10, fontWeight: .regular, alingment: .natural)
-
+    // MARK: - Init
     init(frame: CGRect, viewModel: ChangeSizeViewViewModel) {
         self.viewModel = viewModel
         super.init(frame: frame)
@@ -44,11 +42,10 @@ final class ChangeSizeView: UIView {
     private func setupView() {
         translatesAutoresizingMaskIntoConstraints = false
         backgroundColor = .systemBackground
-        addSubviews(fontSizeSlider, fontSizeSliderLabel)
+        addSubview(fontSizeSlider)
         fontSizeSlider.transform = CGAffineTransform(rotationAngle: CGFloat(-Double.pi/2))
         fontSizeSlider.setValue(16, animated: true)
         fontSizeSlider.addTarget(self, action: #selector(changeSize), for: .valueChanged)
-        //viewModel.delegate = self
     }
     
     @objc private func changeSize(_ sender: UISlider) {
@@ -56,10 +53,6 @@ final class ChangeSizeView: UIView {
         let roundedValue = round(sender.value/step) * step
         sender.setValue(roundedValue, animated: false)
         delegate?.didChangeSize(size: CGFloat(sender.value))
-            
-        //fontSizeSliderLabel.text = "\(sender.value)"
-
-        //print("\(sender.value)")
     }
     
     private func setConstraints() {
@@ -70,13 +63,3 @@ final class ChangeSizeView: UIView {
         ])
     }
 }
-
-
-//extension ChangeSizeView: ChangeFontViewViewModelDelegate {
-//    func didChangeFont(font: String) {
-//        print("In ChangeFontView font: - \(font)")
-//        delegate?.didChangeFont(font: font)
-//    }
-//    
-//    
-//}

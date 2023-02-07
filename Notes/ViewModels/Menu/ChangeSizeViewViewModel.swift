@@ -11,4 +11,5 @@ final class ChangeSizeViewViewModel {
     init() {
         
     }
+    #warning("Maybe send func from view")
 }

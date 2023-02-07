@@ -15,7 +15,6 @@ protocol ChangeParametersViewDelegate: AnyObject {
 final class ChangeParametersView: UIView {
     
     private let viewModel: ChangeParametersViewViewModel
-    
     public weak var delegate: ChangeParametersViewDelegate?
     
     private let menuContainer: UIStackView = {

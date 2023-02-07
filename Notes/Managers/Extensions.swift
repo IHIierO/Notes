@@ -31,7 +31,7 @@ extension UIStackView {
     }
 }
 
-// MARK: - nameOfFont, nameOfBoldFont
+// MARK: - nameOfFont
 extension UIFont {
     
     public enum nameOfFont: String, CaseIterable {
@@ -92,20 +92,6 @@ extension UIFont {
             }
         }
     }
-    
-    public enum nameOfBoldFont: String, CaseIterable {
-        case bold = "Bold"
-        case italic = "Italic"
-        
-        var font: String {
-            switch self {
-            case .bold:
-                return "-" + rawValue
-            case .italic:
-                return "-" + rawValue
-            }
-        }
-    }
 }
 
 // MARK: - components(separatedBy: ), trimWhiteSpace
@@ -136,14 +122,4 @@ extension NSAttributedString {
            let range = NSRange(location: location, length: length)
            return attributedSubstring(from: range)
        }
-}
-
-extension UISlider {
-
-    func setThumbValueWithLabel() -> CGPoint {
-    
-        let slidertTrack : CGRect = self.trackRect(forBounds: self.bounds)
-        let sliderFrm : CGRect = self.thumbRect(forBounds: self.bounds, trackRect: slidertTrack, value: self.value)
-        return CGPoint(x: sliderFrm.origin.x + self.frame.origin.x + 8, y: self.frame.origin.y - 20)
-    }
 }

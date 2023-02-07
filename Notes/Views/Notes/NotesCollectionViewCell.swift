@@ -14,6 +14,7 @@ class NotesCollectionViewCell: UICollectionViewCell {
     private let noteBody = DefaultUILabel(inputText: "Note body", fontSize: 16, fontWeight: .regular, alingment: .left)
     private let noteDate = DefaultUILabel(inputText: "04.02.2023", fontSize: 16, fontWeight: .regular, alingment: .left)
     
+    // MARK: - Init
     override init(frame: CGRect) {
         super.init(frame: frame)
         contentView.addSubviews(noteTitle, noteDate, noteBody)
@@ -61,5 +62,4 @@ class NotesCollectionViewCell: UICollectionViewCell {
         noteBody.attributedText = NSMutableAttributedString(body).trimWhiteSpace()
         noteDate.text = CustomDate.dateString(date: model.noteDate)
     }
-    
 }

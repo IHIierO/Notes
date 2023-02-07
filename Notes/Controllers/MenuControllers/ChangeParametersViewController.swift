@@ -16,9 +16,9 @@ final class ChangeParametersViewController: UIViewController {
     
     private let viewModel: ChangeParametersViewViewModel
     private let changeParametersView: ChangeParametersView
-    
     public weak var delegate: ChangeParametersViewControllerDelegate?
     
+    // MARK: - Init
     init(viewModel: ChangeParametersViewViewModel) {
         self.viewModel = viewModel
         self.changeParametersView = ChangeParametersView(frame: .zero, viewModel: viewModel)
@@ -29,13 +29,13 @@ final class ChangeParametersViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
+    // MARK: - LifeStyle
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
         view.addSubview(changeParametersView)
         setConstraints()
         changeParametersView.delegate = self
-       //viewModel: ChangeParametersViewModel changeParametersView.delegate = self
     }
     
     private func setConstraints() {
@@ -56,6 +56,4 @@ extension ChangeParametersViewController: ChangeParametersViewDelegate {
     func didChangeStyle(_ style: NSAttributedString.Key) {
         delegate?.didChangeStyle(style)
     }
-    
-    
 }
