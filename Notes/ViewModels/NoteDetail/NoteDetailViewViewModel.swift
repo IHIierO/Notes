@@ -6,9 +6,17 @@
 //
 
 import UIKit
+import Photos
+import PhotosUI
 
-final class NoteDetailViewViewModel {
+protocol NoteDetailViewViewModelDelegate: AnyObject {
+    func didFinishPicking(_ image: UIImage)
+}
+
+final class NoteDetailViewViewModel: NSObject {
     private var model: NoteTextModel
+    
+    public weak var delegate: NoteDetailViewViewModelDelegate?
     
     init(model: NoteTextModel) {
         self.model = model
@@ -18,6 +26,7 @@ final class NoteDetailViewViewModel {
         return model
     }
     
+    // MARK: - displayNote
     public var displayNote: NSMutableAttributedString {
         guard model.titleText != nil, model.bodyText != nil else {
             return NSMutableAttributedString(string: "")
@@ -25,12 +34,9 @@ final class NoteDetailViewViewModel {
         let mutableAttributedString = NSMutableAttributedString()
         let titleText = model.titleText!
         let bodyText = model.bodyText!
+        //bodyText.attachment?.adjustsImageSizeForAccessibilityContentSizeCategory = true
         let title = NSMutableAttributedString(titleText)
         let body = NSMutableAttributedString(bodyText)
-//        let title = NSMutableAttributedString(string: titleText)
-//        title.addAttribute(NSAttributedString.Key.font, value: UIFont(name: UIFont.nameOfBoldFont.helveticaNeueBold.rawValue, size: 20)!, range: NSMakeRange(0, titleText.count))
-//        let body = NSMutableAttributedString(string: bodyText)
-//        body.addAttribute(NSAttributedString.Key.font, value: UIFont(name: UIFont.nameOfFont.helveticaNeue.rawValue, size: 16)!, range: NSMakeRange(0, bodyText.count))
         mutableAttributedString.append(title)
         mutableAttributedString.append(NSAttributedString(string: "\n"))
         mutableAttributedString.append(body)
@@ -57,11 +63,14 @@ final class NoteDetailViewViewModel {
         let title = components[0]
         let body = NSMutableAttributedString()
         for i in 1...components.count-1  {
-            let bodyString = components[i]
+            var bodyString = components[i]
+            if bodyString.containsAttachments(in: NSRange(location: 0, length: bodyString.length)) {
+                #warning("Create save logic to save attachment.image to UserDefaults")
+                bodyString = NSAttributedString(string: "")
+            }
             body.append(bodyString)
             body.append(NSAttributedString(string: "\n"))
         }
-        
         completion(.success([AttributedString(title), AttributedString(body)]))
     }
     
@@ -100,6 +109,7 @@ final class NoteDetailViewViewModel {
     ///   - textView: NoteDetailView textView
     ///   - font: font name
     public func changeFont(textView: UITextView, font: String) {
+        #warning("Add rang + location")
         let range = textView.selectedRange
          let string = NSMutableAttributedString(attributedString:
                                                     textView.attributedText)
@@ -117,19 +127,20 @@ final class NoteDetailViewViewModel {
     ///   - size: font size
     public func changeSize(textView: UITextView, size: CGFloat) {
         let range = textView.selectedRange
-         let string = NSMutableAttributedString(attributedString:
+        let string = NSMutableAttributedString(attributedString:
                                                     textView.attributedText)
         var fontName = ""
         string.enumerateAttribute(.font, in: range) { font, _, _ in
             if let font = font as? UIFont {
                 fontName = font.fontName
+                let attributes = [NSAttributedString.Key.font: UIFont(name: fontName, size: size)!]
+                string.addAttributes(attributes, range: textView.selectedRange)
+                textView.attributedText = string
+                textView.selectedRange = range
+            } else {
+                fatalError("No range from textView")
             }
         }
-        let attributes = [NSAttributedString.Key.font: UIFont(name: fontName, size: size)!]
-        string.addAttributes(attributes, range: textView.selectedRange)
-        textView.attributedText = string
-        textView.selectedRange = range
-        
     }
     
     // MARK: - Change Trait
@@ -156,29 +167,18 @@ final class NoteDetailViewViewModel {
                     textView.attributedText = string
                     textView.selectedRange = range
                 } else {
-                    
                     var traitFont = UIFont()
                     if trait == .traitBold {
                         let components = font.fontName.split(separator: "M")
-                        var regularFont = String(components[0])
+                        let regularFont = String(components[0]).split(separator: "-")
                         print("Bold Components: - \(components)")
-                        #warning("change var name")
-                        let ffffont = regularFont.split(separator: "-")
-                        print("Bold rawValue Components: - \(ffffont)")
-                        if regularFont == "Arial-Italic" {
-                            regularFont = "Arial"
-                        }
-                        traitFont = UIFont(name: UIFont.nameOfFont(rawValue: String(ffffont[0]))!.boldFont, size: font.pointSize)!
+                        traitFont = UIFont(name: UIFont.nameOfFont(rawValue: String(regularFont[0]))!.boldFont, size: font.pointSize)!
                     } else if trait == .traitItalic {
-                        let components = font.fontName.split(separator: "-")
-                        var regularFont = String(components[0])
+                        let components = font.fontName.split(separator: "M")
+                        let regularFont = String(components[0]).split(separator: "-")
                         print("Italic Components: - \(components)")
-                        if regularFont == "Arial-Italic" {
-                            regularFont = "Arial"
-                        }
-                        traitFont = UIFont(name: UIFont.nameOfFont(rawValue: regularFont)!.italicFont, size: font.pointSize)!
+                        traitFont = UIFont(name: UIFont.nameOfFont(rawValue: String(regularFont[0]))!.italicFont, size: font.pointSize)!
                     }
-                    
                     print("Regular Font from textView: - \(traitFont.fontName) = bold")
                     let attributes = [NSAttributedString.Key.font: traitFont]
                     string.addAttributes(attributes, range: textView.selectedRange)
@@ -210,5 +210,62 @@ final class NoteDetailViewViewModel {
                 textView.selectedRange = range
             }
         }
+    }
+}
+
+extension NoteDetailViewViewModel: UIImagePickerControllerDelegate, PHPickerViewControllerDelegate, UINavigationControllerDelegate {
+    
+    public func presentPhotoActionSheet(_ rootViewController: UIViewController){
+        let actionSheet = UIAlertController(title: "Фото профиля", message: "Выберете способ", preferredStyle: .actionSheet)
+        actionSheet.addAction(UIAlertAction(title: "Отмена", style: .cancel))
+        actionSheet.addAction(UIAlertAction(title: "Камера", style: .default, handler: { [weak self] _ in
+            self?.presentCamera(rootViewController)
+        }))
+        actionSheet.addAction(UIAlertAction(title: "Библиотека", style: .default, handler: { [weak self] _ in
+            self?.presentPhotoPicker(rootViewController)
+        }))
+        rootViewController.present(actionSheet, animated: true)
+    }
+    
+    private func presentCamera(_ rootViewController: UIViewController){
+        let vc = UIImagePickerController()
+        vc.sourceType = .camera
+        vc.delegate = self
+        vc.allowsEditing = true
+        rootViewController.present(vc, animated: true)
+    }
+    
+    private func presentPhotoPicker(_ rootViewController: UIViewController){
+        var config = PHPickerConfiguration(photoLibrary: .shared())
+        config.filter = .images
+        config.selectionLimit = 1
+        let vc = PHPickerViewController(configuration: config)
+        vc.delegate = self
+        rootViewController.present(vc, animated: true)
+        
+    }
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        picker.dismiss(animated: true)
+        guard let image = info[UIImagePickerController.InfoKey.editedImage] as? UIImage else {return}
+        //profileImage.image = image
+    }
+    
+    func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
+        picker.dismiss(animated: true)
+        
+        results.forEach { result in
+            result.itemProvider.loadObject(ofClass: UIImage.self) { [weak self] reading, error in
+                guard let image = reading as? UIImage, error == nil else {return}
+                DispatchQueue.main.async {
+                    self?.delegate?.didFinishPicking(image)
+                    //self?.profileImage.image = image
+                }
+            }
+        }
+    }
+    
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        picker.dismiss(animated: true)
     }
 }

@@ -36,6 +36,7 @@ class ChangeFontView: UIView {
     
     private func setupView() {
         translatesAutoresizingMaskIntoConstraints = false
+        backgroundColor = .systemBackground
         addSubview(fontPicker)
         fontPicker.delegate = viewModel
         fontPicker.dataSource = viewModel

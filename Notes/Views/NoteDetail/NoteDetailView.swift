@@ -12,6 +12,7 @@ protocol NoteDetailViewDelegate: AnyObject {
     func presentFontMenu(sender: UIButton)
     func presentSizeMenu(sender: UIButton)
     func presentParametersMenu(sender: UIButton)
+    func presentPhotoActionSheet()
 }
 
 final class NoteDetailView: UIView {
@@ -33,6 +34,7 @@ final class NoteDetailView: UIView {
     
     private let menuContainer: UIStackView = {
        let container = UIStackView()
+        container.backgroundColor = .tertiarySystemBackground
         container.axis = .vertical
         container.distribution = .fillEqually
         container.spacing = 2
@@ -47,15 +49,16 @@ final class NoteDetailView: UIView {
     private let menuButton: UIButton = {
        let button = UIButton(frame: CGRect(x: 0, y: 0, width: 50, height: 50))
         button.configuration = .filled()
-        button.configuration?.baseBackgroundColor = .green.withAlphaComponent(0.3)
-        button.configuration?.image = UIImage(systemName: "line.3.horizontal.decrease")
+        button.configuration?.baseBackgroundColor = .quaternarySystemFill
+        button.configuration?.baseForegroundColor = .label
+        button.setImage(UIImage(systemName: "line.3.horizontal.decrease"), for: .normal)
+        button.setImage(UIImage(systemName: "line.3.horizontal"), for: .selected)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
     private let fontName: UIButton = {
        let button = UIButton(frame: CGRect(x: 0, y: 0, width: 50, height: 50))
         button.configuration = .filled()
-        button.configuration?.baseBackgroundColor = .blue
         var title = AttributedString.init("A")
         //attText.obliqueness = 0.2 // To set the slant of the text
         title.font = UIFont(name: UIFont.nameOfFont.didot.rawValue, size: 20)
@@ -67,17 +70,23 @@ final class NoteDetailView: UIView {
        let button = UIButton(frame: CGRect(x: 0, y: 0, width: 50, height: 50))
         button.configuration = .filled()
         button.configuration?.title = "Aa"
-        button.configuration?.baseBackgroundColor = .purple
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
     private let fontParameters: UIButton = {
        let button = UIButton(frame: CGRect(x: 0, y: 0, width: 50, height: 50))
         button.configuration = .filled()
-        button.configuration?.baseBackgroundColor = .systemMint
         var title = AttributedString.init("A")
         title.font = UIFont.boldSystemFont(ofSize: 20)
         button.configuration?.attributedTitle = title
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }()
+    
+    private let addImage: UIButton = {
+       let button = UIButton(frame: CGRect(x: 0, y: 0, width: 50, height: 50))
+        button.configuration = .filled()
+        button.configuration?.image = UIImage(systemName: "plus")
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
@@ -98,8 +107,9 @@ final class NoteDetailView: UIView {
     
     private func setupView(){
         translatesAutoresizingMaskIntoConstraints = false
-        backgroundColor = .systemBackground
-        addSubviews(textView, menuContainer)
+        textView.backgroundColor = .tertiarySystemBackground
+        textView.textColor = .label
+        addSubviews(textView, menuContainer, addImage)
         menuContainer.addArrangedSubview(menuButton)
         menuButton.addTarget(self, action: #selector(menuContainerOpenTap), for: .touchUpInside)
         textView.delegate = self
@@ -107,9 +117,14 @@ final class NoteDetailView: UIView {
     
     // MARK: - setupMenu
     private func setupMenu() {
+        [fontName, fontSize, fontParameters].forEach({
+            $0.configuration?.baseForegroundColor = .label
+            $0.configuration?.baseBackgroundColor = .quaternarySystemFill
+        })
         fontName.addTarget(self, action: #selector(changeFont), for: .touchUpInside)
         fontSize.addTarget(self, action: #selector(changeSize), for: .touchUpInside)
         fontParameters.addTarget(self, action: #selector(changeParameters), for: .touchUpInside)
+        addImage.addTarget(self, action: #selector(addImageToTextView), for: .touchUpInside)
     }
     
     @objc private func changeFont(sender: UIButton) {
@@ -124,6 +139,10 @@ final class NoteDetailView: UIView {
         delegate?.presentParametersMenu(sender: sender)
     }
     
+    @objc private func addImageToTextView() {
+        delegate?.presentPhotoActionSheet()
+    }
+    
     private func setConstraints() {
         NSLayoutConstraint.activate([
             textView.topAnchor.constraint(equalTo: topAnchor),
@@ -134,6 +153,9 @@ final class NoteDetailView: UIView {
             menuContainer.topAnchor.constraint(equalTo: topAnchor, constant: 10),
             menuContainer.rightAnchor.constraint(equalTo: rightAnchor, constant: -10),
             menuContainer.widthAnchor.constraint(equalToConstant: 50),
+            
+            addImage.bottomAnchor.constraint(equalTo: keyboardLayoutGuide.topAnchor, constant: -10),
+            addImage.rightAnchor.constraint(equalTo: rightAnchor, constant: -10)
         ])
         menuContainerOpen = menuContainer.heightAnchor.constraint(equalToConstant: 200)
         menuContainerClosed = menuContainer.heightAnchor.constraint(equalToConstant: 50)
@@ -144,12 +166,14 @@ final class NoteDetailView: UIView {
     @objc private func menuContainerOpenTap() {
         menuIsOpen.toggle()
         if menuIsOpen {
+            menuButton.isSelected = true
             guard let menuContainerOpen = menuContainerOpen, let menuContainerClosed = menuContainerClosed else {return}
             menuContainerOpen.isActive = true
             menuContainerOpen.priority = UILayoutPriority(999)
             menuContainerClosed.isActive = false
             menuContainer.addArrangedSubviews(fontName, fontSize, fontParameters)
         } else {
+            menuButton.isSelected = false
             guard let menuContainerOpen = menuContainerOpen, let menuContainerClosed = menuContainerClosed else {return}
             menuContainerOpen.isActive = false
             menuContainerClosed.isActive = true
@@ -168,7 +192,8 @@ extension NoteDetailView: UITextViewDelegate {
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
         if let character = text.last, character.isNewline {
             print("New Line")
-            let attributesNormal = [NSAttributedString.Key.font : UIFont(name: UIFont.nameOfFont.helveticaNeue.rawValue, size: 16)!]
+            let attributesNormal = [NSAttributedString.Key.font : UIFont(name: UIFont.nameOfFont.helveticaNeue.rawValue, size: 16)!,
+                                    NSAttributedString.Key.foregroundColor: UIColor.label]
             textView.typingAttributes = attributesNormal
         }
         return true

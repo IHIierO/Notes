@@ -21,6 +21,9 @@ final class ChangeSizeView: UIView {
         let slider = UISlider()
         slider.minimumValue = 10
         slider.maximumValue = 30
+        slider.thumbTintColor = .label
+        slider.maximumTrackTintColor = .secondarySystemBackground
+        slider.minimumTrackTintColor = .secondaryLabel
         slider.translatesAutoresizingMaskIntoConstraints = false
         return slider
     }()
@@ -40,6 +43,7 @@ final class ChangeSizeView: UIView {
     
     private func setupView() {
         translatesAutoresizingMaskIntoConstraints = false
+        backgroundColor = .systemBackground
         addSubviews(fontSizeSlider, fontSizeSliderLabel)
         fontSizeSlider.transform = CGAffineTransform(rotationAngle: CGFloat(-Double.pi/2))
         fontSizeSlider.setValue(16, animated: true)

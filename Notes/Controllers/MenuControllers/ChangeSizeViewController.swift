@@ -30,7 +30,7 @@ final class ChangeSizeViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .systemMint
+        view.backgroundColor = .systemBackground
         view.addSubview(changeSizeView)
         setConstraints()
         changeSizeView.delegate = self

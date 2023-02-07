@@ -31,7 +31,7 @@ final class ChangeParametersViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .systemGray2
+        view.backgroundColor = .systemBackground
         view.addSubview(changeParametersView)
         setConstraints()
         changeParametersView.delegate = self

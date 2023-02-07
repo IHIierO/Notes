@@ -480,6 +480,8 @@
 				INFOPLIST_FILE = Notes/Resources/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Notes;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.education";
+				INFOPLIST_KEY_NSCameraUsageDescription = "Please allow access to take a profile photo";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Please allow access to select a photo for your profile";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
@@ -513,6 +515,8 @@
 				INFOPLIST_FILE = Notes/Resources/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Notes;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.education";
+				INFOPLIST_KEY_NSCameraUsageDescription = "Please allow access to take a profile photo";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Please allow access to select a photo for your profile";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;

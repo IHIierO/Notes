@@ -22,6 +22,7 @@ final class ChangeParametersView: UIView {
        let container = UIStackView()
         container.axis = .vertical
         container.distribution = .fillEqually
+        container.backgroundColor = .systemBackground
         container.spacing = 2
         container.layer.cornerRadius = 12
         container.translatesAutoresizingMaskIntoConstraints = false
@@ -31,17 +32,16 @@ final class ChangeParametersView: UIView {
     private let textObliqueness: UIButton = {
        let button = UIButton(frame: CGRect(x: 0, y: 0, width: 50, height: 50))
         button.configuration = .filled()
-        button.configuration?.baseBackgroundColor = .blue
-        var title = AttributedString.init("A")
+        var title = AttributedString.init(" I ")
         title.obliqueness = 0.3
-        button.configuration?.attributedTitle = title
+        title.font = UIFont(name: UIFont.nameOfFont.timesNewRoman.regularFont, size: 20)
+        button.setAttributedTitle(NSAttributedString(title), for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
     private let textUnderline: UIButton = {
        let button = UIButton(frame: CGRect(x: 0, y: 0, width: 50, height: 50))
         button.configuration = .filled()
-        button.configuration?.baseBackgroundColor = .purple
         var title = AttributedString.init("A")
         title.underlineStyle = .single
         button.configuration?.attributedTitle = title
@@ -51,7 +51,6 @@ final class ChangeParametersView: UIView {
     private let textWeight: UIButton = {
        let button = UIButton(frame: CGRect(x: 0, y: 0, width: 50, height: 50))
         button.configuration = .filled()
-        button.configuration?.baseBackgroundColor = .systemMint
         var title = AttributedString.init("B")
         title.font = UIFont.boldSystemFont(ofSize: 20)
         button.configuration?.attributedTitle = title
@@ -61,7 +60,6 @@ final class ChangeParametersView: UIView {
     private let textStrike: UIButton = {
        let button = UIButton(frame: CGRect(x: 0, y: 0, width: 50, height: 50))
         button.configuration = .filled()
-        button.configuration?.baseBackgroundColor = .green
         var title = AttributedString.init("A")
         title.strikethroughStyle = .single
         button.configuration?.attributedTitle = title
@@ -75,7 +73,7 @@ final class ChangeParametersView: UIView {
     init(frame: CGRect, viewModel: ChangeParametersViewViewModel) {
         self.viewModel = viewModel
         super.init(frame: frame)
-        backgroundColor = .systemGray2
+        backgroundColor = .systemBackground
         translatesAutoresizingMaskIntoConstraints = false
         addSubview(menuContainer)
         setConstraints()
@@ -96,6 +94,10 @@ final class ChangeParametersView: UIView {
     }
     
     private func setupMenu() {
+        [textWeight, textObliqueness, textStrike, textUnderline].forEach({
+            $0.configuration?.baseForegroundColor = .label
+            $0.configuration?.baseBackgroundColor = .quaternarySystemFill
+        })
         menuContainer.addArrangedSubviews(textWeight, textObliqueness, textUnderline, textStrike)
         textWeight.addTarget(self, action: #selector(changeWeight), for: .touchUpInside)
         textObliqueness.addTarget(self, action: #selector(changeObliqueness), for: .touchUpInside)
